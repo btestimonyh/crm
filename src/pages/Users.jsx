@@ -5,7 +5,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Box } from "@mui/material";
 import { useState } from "react";
 import { FaUser } from "react-icons/fa";
-import { HiDotsVertical } from "react-icons/hi";
 import UserAction from "../components/Users/UserAction";
 
 
@@ -46,7 +45,7 @@ const UsersPage = () => {
     }
 
     const deactiveHandler = (account) =>{
-
+        console.log(account);
     }
 
     const modifiedTable = usersTitle.map((el) => {
@@ -93,7 +92,7 @@ const UsersPage = () => {
                 renderCell: (params) => (
                     <UserAction
                         onDeactive={deactiveHandler}
-                        params={params} />
+                        account={params.row} />
                 )
             }
         }

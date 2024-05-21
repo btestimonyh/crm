@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useState } from "react";
 
 
-const UserAction = ({ params, onDeactive }) => {
+const UserAction = ({ account, onDeactive }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -16,10 +16,8 @@ const UserAction = ({ params, onDeactive }) => {
     };
 
     const deactiveAccount = () => {
-        console.log(params.row);
         handleClose();
-        onDeactive();
-        
+        onDeactive(account);
     }
 
     return (
@@ -35,7 +33,7 @@ const UserAction = ({ params, onDeactive }) => {
                 }}
             >
                 <MenuItem onClick={handleClose}>Профиль</MenuItem>
-                <MenuItem onClick={deactiveAccount}>Деактивировать</MenuItem>
+                <MenuItem onClick={deactiveAccount}>{account.status == 'active' ? 'Деактивировать' : 'Активировать'}</MenuItem>
                 <MenuItem onClick={handleClose}>Удалить</MenuItem>
 
 
@@ -43,15 +41,6 @@ const UserAction = ({ params, onDeactive }) => {
         </div>
     )
 
-    // return <div className="relative flex items-center justify-center h-full text-xl cursor-pointer"
-    //     onClick={(e) => {
-    //         e.stopPropagation();
-
-    //     }
-    //     } >
-    //     <HiDotsVertical />
-    //     {/* <div className="absolute z-10 h-40 top-0 bg-white px-4 text-black rounded-xl shadow-xl border-1">Test</div> */}
-    // </div >
 }
 
 export default UserAction;
