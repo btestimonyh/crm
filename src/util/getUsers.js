@@ -1,4 +1,7 @@
 export const getUsers = async () => {
+    // implementing some test functionality here
+    // testing how PR will work
+
     // запит на всіх юзерів, повертає масив з юзерами
     const USERS_FOR_TEST = [
         {
