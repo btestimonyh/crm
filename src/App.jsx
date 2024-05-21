@@ -4,13 +4,14 @@ import UsersPage from "./pages/Users"
 import LoginPage from "./pages/Login"
 import LeadsPage from "./pages/Leads";
 import StatsPage from "./pages/Stats";
+import { getUsers } from "./util/getUsers";
 
 
 function App() {
   const isLogged = localStorage.getItem('isLogged');
   const routing = isLogged ? '/main/users' : '/login';
 
- 
+
 
   const router = createHashRouter([
     {
@@ -23,15 +24,16 @@ function App() {
       children: [
         {
           path: 'users',
-          element: <UsersPage />
+          element: <UsersPage />,
+          loader: getUsers,
         },
         {
-          path:'leads',
-          element: <LeadsPage/>
+          path: 'leads',
+          element: <LeadsPage />
         },
         {
-          path:'stats',
-          element: <StatsPage/>
+          path: 'stats',
+          element: <StatsPage />
         }
       ]
     },

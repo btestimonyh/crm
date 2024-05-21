@@ -13,7 +13,7 @@ import UserInfo from "./UserInfo";
 
 const Navigation = () =>{
     
-    return <nav className="w-[320px] ml-4 mt-10 max-md:fixed max-md:left-0 max-md:top-0">
+    return <nav className="w-[320px] max-md:fixed max-md:left-0 max-md:top-0">
         <UserInfo/>
         <NavItem to='/main/users' icon={<FaRegUser/>} background='bg-red-600'>Пользователи</NavItem>
         <NavItem to='/main/leads' icon={<FiShoppingCart/>} background='bg-yellow-600'>Лиды</NavItem>

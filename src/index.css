@@ -19,16 +19,53 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  /* border-color: gray!important; */
+
 }
 
-body{
+body {
   width: 100vw;
 }
 
-input{
+input {
   color: white !important;
+}
+
+section {
+  width: calc(100% - 320px);
+  height: 90vh;
+}
+
+.MuiDataGrid-container--top [role=row],
+.css-10y1nqf-MuiDataGrid-root .MuiDataGrid-container--bottom [role=row] {
+  background: #151d28 !important;
+}
+
+.MuiTablePagination-root{
+  color: #fff!important;
+}
+
+.MuiDataGrid-columnHeader:focus-within .MuiDataGrid-columnSeparator {
+  display: none!important;
+}
+.MuiDataGrid-columnSeparator {
+  display: none!important;
+}
+.MuiDataGrid-sortIcon, .MuiDataGrid-filterIcon{
+  display: none!important;
+}
+
+.MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus{
+  outline: none!important;
+}
+.MuiDataGrid-overlay{
+  background: inherit!important;
+}
+
+.MuiDataGrid-row{
+  --rowBorderColor: rgba(128, 128, 128,.5)!important;
 }
