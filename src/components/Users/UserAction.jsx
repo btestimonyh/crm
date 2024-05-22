@@ -5,6 +5,8 @@ import { useState } from "react";
 import { accountActive } from "../../util/accountActive";
 import { deleteAccount as deleteAccountBack } from "../../util/deleteAccount";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { role } from "../../store/store";
 
 
 const UserAction = ({ account, onDeactive, onDelete }) => {
@@ -30,6 +32,10 @@ const UserAction = ({ account, onDeactive, onDelete }) => {
         onDelete(account);
     }
 
+
+    const ROLE = useSelector(role);
+    const validDelete = (ROLE == 'owner' && account.job !== 'owner') || (ROLE == 'admin' && (account.job !== 'admin' && account.job !== 'owner'));
+
     return (
         <div className="flex items-center justify-center h-full text-xl cursor-pointer">
             <HiDotsVertical onClick={handleClick} />
@@ -48,8 +54,9 @@ const UserAction = ({ account, onDeactive, onDelete }) => {
                     </Link>
 
                 </MenuItem>
-                <MenuItem onClick={deactiveAccount}>{account.status == 'active' ? 'Деактивировать' : 'Активировать'}</MenuItem>
-                <MenuItem onClick={deleteAccount}>Удалить</MenuItem>
+                {validDelete && <MenuItem onClick={deactiveAccount}>{account.status == 'active' ? 'Деактивировать' : 'Активировать'}</MenuItem>}
+
+                {validDelete && <MenuItem onClick={deleteAccount}>Удалить</MenuItem>}
 
 
             </Menu>

@@ -30,7 +30,7 @@ const FilterProjects = ({ filterUsers, filterStatus }) => {
             <div className='flex gap-4 max-md:flex-col'>
                 <div>
                     <div className='text-gray-500 text-sm mt-4 pl-2'>
-                        Должность
+                        Байер
                     </div>
                     <Select
                         onChange={handleFilter}

@@ -1,13 +1,15 @@
-import { Await, useLoaderData } from "react-router-dom";
+import { Await, useLoaderData, useNavigate } from "react-router-dom";
 import FilterUsers from "../components/Users/FilterUsers";
 import { usersTitle } from "../components/Users/userTitle";
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, Button } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
 import UserAction from "../components/Users/UserAction";
 import Modal from "../components/Modal/Modal";
 import RegisterForm from "../components/Login/RegisterForm";
+import { useSelector } from "react-redux";
+import { role } from "../store/store";
 
 const UsersPage = () => {
     const fullData = useLoaderData();
@@ -15,6 +17,15 @@ const UsersPage = () => {
     const [activeFilter, setActiveFilter] = useState(false);
     const [activeStatus, setActiveStatus] = useState(false);
     const [addingUser, setAddingUser] = useState(false);
+
+    const ROLE = useSelector(role);
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (ROLE == 'buyer') {
+            navigate('/main/projects');
+        }
+    }, [ROLE, navigate]);
+
 
     const filterUsers = (value) => {
         if (value == 'all') {
@@ -160,7 +171,7 @@ const UsersPage = () => {
             </div>
             {addingUser &&
                 <Modal onClose={() => setAddingUser(false)} id='register-form'>
-                    <RegisterForm onClose={() => setAddingUser(false)} onAdd={addHandler}/>
+                    <RegisterForm onClose={() => setAddingUser(false)} onAdd={addHandler} />
                 </Modal>
             }
         </Await>

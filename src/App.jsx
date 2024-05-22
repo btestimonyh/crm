@@ -9,10 +9,36 @@ import { getProjects } from "./util/getProjects";
 import UserInfo from "./pages/UserInfo";
 import Projects from "./pages/Projects";
 import ProjectInfo from "./pages/ProjectInfo";
+import { useDispatch } from "react-redux";
+import { setAdmin, setOwner } from "./store/store";
+import { useEffect } from "react";
+import { roleCheck } from "./util/roleCheck";
 
 function App() {
   const isLogged = localStorage.getItem('isLogged');
-  const routing = isLogged ? '/main/users' : '/login';
+  const routing = isLogged ? '/main/projects' : '/login';
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const userId = localStorage.getItem('user-id')
+    const getRole = async () => {
+      const role = await roleCheck(userId);
+      if (role == 'admin') {
+        dispatch(setAdmin());
+      } else if (role == 'owner') {
+        dispatch(setOwner());
+      }else if(role == 'buyer'){
+        return;
+      }
+      else{
+        localStorage.removeItem('isLogged');
+        localStorage.removeItem('user-id')
+      }
+    }
+    getRole();
+  }, [dispatch]);
+
 
   const router = createHashRouter([
     {

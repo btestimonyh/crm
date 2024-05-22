@@ -7,6 +7,8 @@ import { formatDateTime } from "../../util/front/formatDate";
 import { IoClose } from "react-icons/io5";
 import { customStyles } from "../Users/CustomStylesSelect";
 import Select from 'react-select';
+import { useSelector } from "react-redux";
+import { role } from "../../store/store";
 
 
 const RegisterForm = ({ onClose, onAdd }) => {
@@ -88,12 +90,23 @@ const RegisterForm = ({ onClose, onAdd }) => {
         onAdd(data);
         // window.location.href = '/'
     }
+    const ROLE = useSelector(role);
 
-    const options = [
-        { value: 'buyer', label: 'Байер' },
-        { value: 'admin', label: 'Админ' },
-        { value: 'owner', label: 'Владелец' },
-    ]
+    let options;
+    if (ROLE == 'owner') {
+        options = [
+            { value: 'buyer', label: 'Байер' },
+            { value: 'admin', label: 'Админ' },
+            // { value: 'owner', label: 'Владелец' },
+        ]
+    } else {
+        options = [
+            { value: 'buyer', label: 'Байер' },
+        ]
+    }
+
+
+
     const handleChange = (option) => {
         setJob(option.value);
     }

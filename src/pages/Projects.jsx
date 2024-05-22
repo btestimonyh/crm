@@ -7,6 +7,8 @@ import { projectsTitle } from "../components/Projects/projectsTitle";
 import Modal from "../components/Modal/Modal";
 import AddProjectForm from "../components/Projects/AddProjectForm";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { role } from "../store/store";
 
 const Projects = () => {
     const projects = useLoaderData();
@@ -14,13 +16,14 @@ const Projects = () => {
     const [addingProject, setAddingProject] = useState(false);
 
     const navigate = useNavigate();
-    const addProject = (project) =>{
+    const addProject = (project) => {
         setActiveProjects([...activeProjects, project])
     }
-    const handleRowClick = (params) =>{
+    const handleRowClick = (params) => {
         navigate(`/main/projects/${params.row.id}`);
     }
-
+    const ROLE = useSelector(role);
+    const ADMIN = ROLE == 'admin' || ROLE == 'owner';
     return <section>
         {/* <div className="w-full bg-[#151d28] rounded-xl flex">
             <FilterProjects />
@@ -28,7 +31,7 @@ const Projects = () => {
         <div className="w-full bg-[#151d28] rounded-xl flex flex-col mt-8 h-max">
             <div className='w-full p-6 flex items-center gap-4 justify-between'>
                 <div>ПРОЕКТЫ</div>
-                <Button variant="contained" color="secondary"><span className="font-[700] max-sm:text-[12px]" onClick={() => setAddingProject(true)} >ДОБАВИТЬ ПРОЕКТ</span></Button>
+                {ADMIN && <Button variant="contained" color="secondary"><span className="font-[700] max-sm:text-[12px]" onClick={() => setAddingProject(true)} >ДОБАВИТЬ ПРОЕКТ</span></Button>}
             </div>
             <Box className='px-6 w-full h-[60vh] max-sm:px-2 max-sm:gap-1'>
                 <DataGrid
