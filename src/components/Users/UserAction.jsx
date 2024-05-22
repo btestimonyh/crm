@@ -2,9 +2,12 @@ import { HiDotsVertical } from "react-icons/hi";
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from "react";
+import { accountActive } from "../../util/accountActive";
+import { deleteAccount as deleteAccountBack } from "../../util/deleteAccount";
+import { Link } from "react-router-dom";
 
 
-const UserAction = ({ account, onDeactive }) => {
+const UserAction = ({ account, onDeactive, onDelete }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -17,7 +20,14 @@ const UserAction = ({ account, onDeactive }) => {
 
     const deactiveAccount = () => {
         handleClose();
+        accountActive(account);
         onDeactive(account);
+    }
+
+    const deleteAccount = () => {
+        handleClose();
+        deleteAccountBack(account);
+        onDelete(account);
     }
 
     return (
@@ -32,9 +42,14 @@ const UserAction = ({ account, onDeactive }) => {
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                <MenuItem onClick={handleClose}>Профиль</MenuItem>
+                <MenuItem onClick={handleClose}>
+                    <Link to={`/main/users/${account.email}`}>
+                        Профиль
+                    </Link>
+
+                </MenuItem>
                 <MenuItem onClick={deactiveAccount}>{account.status == 'active' ? 'Деактивировать' : 'Активировать'}</MenuItem>
-                <MenuItem onClick={handleClose}>Удалить</MenuItem>
+                <MenuItem onClick={deleteAccount}>Удалить</MenuItem>
 
 
             </Menu>

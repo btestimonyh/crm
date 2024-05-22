@@ -4,7 +4,6 @@ export const customStyles = {
         backgroundColor: '#131a22',
         border: 'none',
         boxShadow: 'none',
-        width: '500px',
     }),
     menu: (provided) => ({
         ...provided,

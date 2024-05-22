@@ -9,46 +9,46 @@ export const getUsers = async () => {
     const USERS_FOR_TEST = [
         {
             id: '1',
-            userId: 'uuidUserID',
+            userId: 'uuidUserID1',
             name: 'Бtest1',
             email: 'test1@gmail.com',
-            telegram: 'test1telegram',
+            telegram: 'test1telegram1',
             job: 'owner',
-            status: 'active'
+            status: 'active',
         },
         {
             id: '2',
-            userId: 'uuidUserID',
+            userId: 'uuidUserID2',
             name: 'test',
             email: 'test1@gmail.com',
-            telegram: 'test1telegram',
+            telegram: 'test1telegram2',
             job: 'buyer',
             status: 'active'
         },
         {
             id: '3',
-            userId: 'uuidUserID',
+            userId: 'uuidUserID3',
             name: 'test1',
             email: 'test1@gmail.com',
-            telegram: 'test1telegram',
+            telegram: 'test1telegram3',
             job: 'owner',
             status: 'inactive'
         },
         {
             id: '4',
-            userId: 'uuidUserID',
+            userId: 'uuidUserID4',
             name: 'Бtest1',
             email: 'test1@gmail.com',
-            telegram: 'test1telegram',
+            telegram: 'test1telegram4',
             job: 'owner',
             status: 'active'
         },
         {
             id: '5',
-            userId: 'uuidUserID',
+            userId: 'uuidUserID5',
             name: 'test',
             email: 'test1@gmail.com',
-            telegram: 'test1telegram',
+            telegram: 'test1telegram5',
             job: 'admin',
             status: 'active'
         },

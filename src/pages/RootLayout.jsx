@@ -9,7 +9,7 @@ const RootLayout = () => {
             window.location.href = '/'
         }
     }, [])
-    return <div className='flex w-full gap-8 p-10'>
+    return <div className='flex w-full gap-8 p-10 max-md:p-2 max-md:py-20'>
         <Navigation/>
         <Outlet />
     </div>

@@ -39,6 +39,12 @@ section {
   width: calc(100% - 320px);
   height: 90vh;
 }
+@media screen and (max-width: 920px) {
+  section{
+    width: 100%
+  }
+}
+
 
 .MuiDataGrid-container--top [role=row],
 .css-10y1nqf-MuiDataGrid-root .MuiDataGrid-container--bottom [role=row] {
@@ -68,4 +74,11 @@ section {
 
 .MuiDataGrid-row{
   --rowBorderColor: rgba(128, 128, 128,.5)!important;
+}
+
+@media screen and (max-width: 920px) {
+  .MuiDataGrid-columnHeader, .MuiDataGrid-cell{
+    padding-left: 0px!important;
+    padding-right: 0px!important;
+  }
 }

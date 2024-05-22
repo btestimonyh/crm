@@ -3,7 +3,8 @@ export const usersTitle = [
         field: 'id',
         headerName: 'ID',
         disableColumnMenu: true,
-        flex: 1
+        flex: 1,
+        // maxWidth: 38,
     },
     {
         field: 'name',

@@ -2,18 +2,19 @@ import { Await, useLoaderData } from "react-router-dom";
 import FilterUsers from "../components/Users/FilterUsers";
 import { usersTitle } from "../components/Users/userTitle";
 import { DataGrid } from '@mui/x-data-grid';
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useState } from "react";
 import { FaUser } from "react-icons/fa";
 import UserAction from "../components/Users/UserAction";
-
+import Modal from "../components/Modal/Modal";
+import RegisterForm from "../components/Login/RegisterForm";
 
 const UsersPage = () => {
     const fullData = useLoaderData();
     const [activeData, setActiveData] = useState(fullData);
     const [activeFilter, setActiveFilter] = useState(false);
     const [activeStatus, setActiveStatus] = useState(false);
-
+    const [addingUser, setAddingUser] = useState(false);
 
     const filterUsers = (value) => {
         if (value == 'all') {
@@ -44,8 +45,22 @@ const UsersPage = () => {
 
     }
 
-    const deactiveHandler = (account) =>{
-        console.log(account);
+    const deactiveHandler = (account) => {
+        const index = activeData.findIndex(element => element.userId === account.userId);
+
+        const newAccount = { ...account, status: account.status == 'active' ? 'inactive' : 'active' };
+        const updatedData = [...activeData];
+        updatedData.splice(index, 1, newAccount);
+        setActiveData(updatedData);
+    }
+
+    const deleteHandler = (account) => {
+        const updatedData = [...activeData].filter(el => el.userId !== account.userId);
+        setActiveData(updatedData);
+    }
+
+    const addHandler = (account) => {
+        setActiveData([...activeData, account])
     }
 
     const modifiedTable = usersTitle.map((el) => {
@@ -54,7 +69,7 @@ const UsersPage = () => {
                 ...el,
                 renderCell: (params) => (
                     <div className="flex items-center gap-2">
-                        <div className="text-purple-600 bg-purple-400/20 w-min p-2 rounded-[50%] flex items-center gap-4">
+                        <div className="text-purple-600 bg-purple-400/20 w-min p-2 rounded-[50%] flex items-center gap-4 max-sm:hidden">
                             <FaUser />
                         </div>
 
@@ -78,9 +93,9 @@ const UsersPage = () => {
         } else if (el.field === 'status') {
             return {
                 ...el,
-                renderCell: (params) => (<div className="flex">
-                    {params.value == 'active' && <div className="border-2 shadow-xl rounded-xl px-2 border-green-800 text-green-800 font-bold">Активный</div>}
-                    {params.value == 'inactive' && <div className="border-2 shadow-xl rounded-xl px-2 border-red-800 font-bold text-red-800">Неактивный</div>}
+                renderCell: (params) => (<div className="flex h-full">
+                    {params.value == 'active' && <div className="border-2 h-1/2 flex mt-3 items-center justify-center shadow-xl rounded-xl px-2 border-green-800 text-green-800 font-bold"><span className="max-sm:hidden">Активный</span><span className="sm:hidden">A</span></div>}
+                    {params.value == 'inactive' && <div className="border-2 h-1/2 flex mt-3 items-center justify-center shadow-xl rounded-xl px-2 border-red-800 font-bold text-red-800"><span className="max-sm:hidden">Неактивный</span><span className="sm:hidden">Н/A</span></div>}
                 </div>
 
                 )
@@ -91,6 +106,7 @@ const UsersPage = () => {
                 ...el,
                 renderCell: (params) => (
                     <UserAction
+                        onDelete={deleteHandler}
                         onDeactive={deactiveHandler}
                         account={params.row} />
                 )
@@ -104,19 +120,23 @@ const UsersPage = () => {
 
 
 
-
     return <section>
         <FilterUsers filterUsers={filterUsers} filterStatus={filterStatus} />
         <Await resolve={fullData}>
             <div className="w-full bg-[#151d28] rounded-xl flex flex-col mt-8 h-max">
-                <div className='w-full p-6'>
+                <div className='w-full p-6 flex items-center gap-4 justify-between'>
                     ПОЛЬЗОВАТЕЛИ
+                    <Button variant="contained" color="secondary"><span className="font-[700] max-sm:text-[12px]" onClick={() => setAddingUser(true)}>ДОБАВИТЬ ПОЛЬЗОВАТЕЛЯ</span></Button>
                 </div>
-                <Box className='px-6 w-full h-[60vh]'>
+                <Box className='px-6 w-full h-[60vh] max-sm:px-2 max-sm:gap-1'>
                     <DataGrid
                         sx={{
                             color: 'white',
                             border: 'none',
+                            '@media (max-width: 600px)': { // Тут ви вказуєте медіа-запит для мобільних пристроїв (менше 600px)
+                                fontSize: '12px',
+                                // marginRight: '-20px' // Встановлюємо розмір шрифту для мобільних пристроїв
+                            },
                             // marginRight: '200px',
                         }}
                         // className="text-[#fff]"
@@ -132,12 +152,17 @@ const UsersPage = () => {
                             },
                         }}
                         pageSizeOptions={[5, 10, 15, 20]}
-                        checkboxSelection
+                    // checkboxSelection
                     // disableRowSelectionOnClick
                     />
                 </Box>
 
             </div>
+            {addingUser &&
+                <Modal onClose={() => setAddingUser(false)}>
+                    <RegisterForm id='register-form' onClose={() => setAddingUser(false)} onAdd={addHandler}/>
+                </Modal>
+            }
         </Await>
 
     </section>

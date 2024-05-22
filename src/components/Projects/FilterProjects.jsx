@@ -1,7 +1,7 @@
 import Select from 'react-select';
-import { customStyles } from './CustomStylesSelect';
+import { customStyles } from '../Users/CustomStylesSelect';
 
-const FilterUsers = ({ filterUsers, filterStatus }) => {
+const FilterProjects = ({ filterUsers, filterStatus }) => {
 
     const options = [
         { value: 'owner', label: 'Владелец' },
@@ -60,4 +60,4 @@ const FilterUsers = ({ filterUsers, filterStatus }) => {
     </div>
 }
 
-export default FilterUsers;
+export default FilterProjects;

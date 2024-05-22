@@ -3,8 +3,13 @@ import LoginInput from "./Input";
 import { Button } from "@mui/material";
 import { registerUser } from "../../util/registerUser";
 import { v4 as uuidv4 } from 'uuid';
+import { formatDateTime } from "../../util/front/formatDate";
+import { IoClose } from "react-icons/io5";
+import { customStyles } from "../Users/CustomStylesSelect";
+import Select from 'react-select';
 
-const RegisterForm = ({ changeType }) => {
+
+const RegisterForm = ({ id, onClose, onAdd }) => {
     const loginInput = useRef(null);
     const passwordInput = useRef(null);
     const nameInput = useRef(null);
@@ -14,10 +19,11 @@ const RegisterForm = ({ changeType }) => {
 
     const [loginError, setLoginError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
-    const [nameError,setNameError] = useState(false);
-    const [subNameError,setSubNameError] = useState(false);
-    const [tagError,setTagError] = useState(false);
-    const [telegramErorr,setTelegramError] = useState(false);
+    const [nameError, setNameError] = useState(false);
+    const [subNameError, setSubNameError] = useState(false);
+    const [tagError, setTagError] = useState(false);
+    const [telegramErorr, setTelegramError] = useState(false);
+    const [job, setJob] = useState('buyer');
 
 
 
@@ -28,8 +34,8 @@ const RegisterForm = ({ changeType }) => {
         const subNameValue = subNameInput.current.value;
         const tagValue = tagInput.current.value;
         const telegramValue = telegramInput.current.value;
-        
-        
+
+
         e.preventDefault();
         if (loginValue.length < 4 || !loginValue.includes('@')) {
             return setLoginError(true);
@@ -64,38 +70,62 @@ const RegisterForm = ({ changeType }) => {
 
         const id = uuidv4();
         const data = {
-            id: id,
-            login: loginValue,
+            userId: id,
+            id: 10,
+            email: loginValue,
             password: passwordValue,
             name: nameValue,
             subName: subNameValue,
             tag: tagValue,
             telegram: telegramValue,
+            status: 'active',
+            job: job,
+            date: formatDateTime(),
         }
-        
-        registerUser(data);
-        localStorage.setItem('user-id',id);
-        localStorage.setItem('isLogged', true);
-        window.location.href = '/'
 
+        registerUser(data);
+        onClose();
+        onAdd(data);
+        // window.location.href = '/'
+    }
+
+    const options = [
+        { value: 'buyer', label: 'Байер' },
+        { value: 'admin', label: 'Админ' },
+        { value: 'owner', label: 'Владелец' },
+    ]
+    const handleChange = (option) => {
+        setJob(option.value);
     }
 
     return <form
+        id={id}
+        onClick={(e) => e.stopPropagation()}
         onSubmit={submitHandler}
-        className="bg-[#161c28] min-w-[360px] flex flex-col p-8 py-10 rounded-xl shadow-xl gap-4 max-sm:px-4">
-        <h1 className="text-xl w-full text-center">Регистрация</h1>
-        <p className="text-sm text-gray-500">Пожалуйста, введите свои данные</p>
-        <LoginInput placeholder="Почта" ref={loginInput} error={loginError}/>
-        <LoginInput placeholder="Пароль" type='password' ref={passwordInput} error={passwordError}/>
+        className="bg-[#161c28] min-w-[360px] flex flex-col p-8 py-10 rounded-xl shadow-xl gap-4 max-sm:px-4 relative">
+        <h1 className="text-xl w-full text-center">Добавить пользователя</h1>
+        {/* <p className="text-sm text-gray-500">Пожалуйста, введите свои данные</p> */}
+        <LoginInput placeholder="Почта" ref={loginInput} error={loginError} />
+        <LoginInput placeholder="Пароль" ref={passwordInput} error={passwordError} />
         <div className="flex gap-2">
             <LoginInput placeholder="Имя" ref={nameInput} error={nameError} />
-            <LoginInput placeholder='Фамилия' ref={subNameInput} error={subNameError}/>
+            <LoginInput placeholder='Фамилия' ref={subNameInput} error={subNameError} />
         </div>
-        <LoginInput placeholder='Тэг' ref={tagInput} error={tagError}/>
+        <LoginInput placeholder='Тэг' ref={tagInput} error={tagError} />
         <LoginInput placeholder='Telegram без @' ref={telegramInput} error={telegramErorr} />
-        <Button type='submit' variant="contained" color="secondary"><span className="font-[700]">ЗАРЕГИСТРИРОВАТЬСЯ</span></Button>
-        <div className="text-base font-[400] w-full text-center text-gray-500 text-[14px]">
+        <Select
+            defaultValue={options[0]}
+            options={options}
+            styles={customStyles}
+            className='w-full'
+            onChange={handleChange}
+        />
+        <Button type='submit' variant="contained" color="secondary"><span className="font-[700]">ДОБАВИТЬ</span></Button>
+        {/* <div className="text-base font-[400] w-full text-center text-gray-500 text-[14px]">
             Уже есть аккаунт? <span onClick={changeType} className="text-[#9c27b0] cursor-pointer hover:text-[#9c27b0]/70">Войти</span>
+        </div> */}
+        <div className="absolute top-4 right-4 text-3xl cursor-pointer" onClick={onClose}>
+            <IoClose />
         </div>
 
     </form>

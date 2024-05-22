@@ -3,7 +3,7 @@ import LoginInput from "./Input";
 import { useEffect, useRef, useState } from "react";
 import { loginCheck } from "../../util/loginCheck";
 
-const LoginForm = ({ changeType }) => {
+const LoginForm = () => {
     const loginInput = useRef(null);
     const passwordInput = useRef(null);
     const [loginError, setLoginError] = useState(false);
@@ -67,9 +67,9 @@ const LoginForm = ({ changeType }) => {
             </div>
         </div>
         <Button type='submit' variant="contained" color="secondary"><span className="font-[700]">ВОЙТИ</span></Button>
-        <div className="text-base font-[400] w-full text-center text-gray-500 text-[14px]">
+        {/* <div className="text-base font-[400] w-full text-center text-gray-500 text-[14px]">
             Нету аккаунта? <span onClick={changeType} className="text-[#9c27b0] cursor-pointer hover:text-[#9c27b0]/70">Создать аккаунт</span>
-        </div>
+        </div> */}
 
     </form>
 }
