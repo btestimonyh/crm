@@ -159,8 +159,8 @@ const UsersPage = () => {
 
             </div>
             {addingUser &&
-                <Modal onClose={() => setAddingUser(false)}>
-                    <RegisterForm id='register-form' onClose={() => setAddingUser(false)} onAdd={addHandler}/>
+                <Modal onClose={() => setAddingUser(false)} id='register-form'>
+                    <RegisterForm onClose={() => setAddingUser(false)} onAdd={addHandler}/>
                 </Modal>
             }
         </Await>

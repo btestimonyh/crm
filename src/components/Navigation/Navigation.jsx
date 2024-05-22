@@ -1,6 +1,6 @@
 import { FaRegUser } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
-import { IoIosStats } from "react-icons/io";
+// import { IoIosStats } from "react-icons/io";
 import { GrProjects } from "react-icons/gr";
 
 
@@ -38,7 +38,7 @@ const Navigation = () => {
                 <UserInfo />
                 <NavItem to='/main/users' icon={<FaRegUser />} background='bg-red-600'>Пользователи</NavItem>
                 <NavItem to='/main/leads' icon={<FiShoppingCart />} background='bg-yellow-600'>Лиды</NavItem>
-                <NavItem to='/main/stats' icon={<IoIosStats />} background='bg-blue-600'>Статистика</NavItem>
+                {/* <NavItem to='/main/stats' icon={<IoIosStats />} background='bg-blue-600'>Статистика</NavItem> */}
                 <NavItem to='/main/projects' icon={<GrProjects />} background='bg-green-600'>Проекты</NavItem>
             </nav>
             {/* MOBILE */}
@@ -47,7 +47,7 @@ const Navigation = () => {
                 <UserInfo />
                 <NavItem to='/main/users' icon={<FaRegUser />} background='bg-red-600' onClick={() => setShowNavigation(false)}>Пользователи</NavItem>
                 <NavItem to='/main/leads' icon={<FiShoppingCart />} background='bg-yellow-600' onClick={() => setShowNavigation(false)}>Лиды</NavItem>
-                <NavItem to='/main/stats' icon={<IoIosStats />} background='bg-blue-600' onClick={() => setShowNavigation(false)}>Статистика</NavItem>
+                {/* <NavItem to='/main/stats' icon={<IoIosStats />} background='bg-blue-600' onClick={() => setShowNavigation(false)}>Статистика</NavItem> */}
                 <NavItem to='/main/projects' icon={<GrProjects />} background='bg-green-600' onClick={() => setShowNavigation(false)}>Проекты</NavItem>
                 <div className="absolute top-4 right-4 text-3xl" onClick={closeNavigation}>
                     <AiOutlineCloseSquare />

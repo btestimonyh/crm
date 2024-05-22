@@ -5,8 +5,10 @@ import LoginPage from "./pages/Login"
 import LeadsPage from "./pages/Leads";
 import StatsPage from "./pages/Stats";
 import { getUsers } from "./util/getUsers";
+import { getProjects } from "./util/getProjects";
 import UserInfo from "./pages/UserInfo";
 import Projects from "./pages/Projects";
+import ProjectInfo from "./pages/ProjectInfo";
 
 function App() {
   const isLogged = localStorage.getItem('isLogged');
@@ -41,7 +43,13 @@ function App() {
         },
         {
           path: 'projects',
-          element: <Projects />
+          element: <Projects />,
+          loader: getProjects,
+        },
+        {
+          path: 'projects/:id',
+          element: <ProjectInfo />,
+          loader: getProjects,
         }
       ]
     },

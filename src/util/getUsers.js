@@ -20,7 +20,7 @@ export const getUsers = async () => {
             id: '2',
             userId: 'uuidUserID2',
             name: 'test',
-            email: 'test1@gmail.com',
+            email: 'test2@gmail.com',
             telegram: 'test1telegram2',
             job: 'buyer',
             status: 'active'
@@ -29,7 +29,7 @@ export const getUsers = async () => {
             id: '3',
             userId: 'uuidUserID3',
             name: 'test1',
-            email: 'test1@gmail.com',
+            email: 'test3@gmail.com',
             telegram: 'test1telegram3',
             job: 'owner',
             status: 'inactive'
@@ -38,7 +38,7 @@ export const getUsers = async () => {
             id: '4',
             userId: 'uuidUserID4',
             name: 'Бtest1',
-            email: 'test1@gmail.com',
+            email: 'test4@gmail.com',
             telegram: 'test1telegram4',
             job: 'owner',
             status: 'active'
@@ -47,7 +47,7 @@ export const getUsers = async () => {
             id: '5',
             userId: 'uuidUserID5',
             name: 'test',
-            email: 'test1@gmail.com',
+            email: 'test5@gmail.com',
             telegram: 'test1telegram5',
             job: 'admin',
             status: 'active'

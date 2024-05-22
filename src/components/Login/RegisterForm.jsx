@@ -9,7 +9,7 @@ import { customStyles } from "../Users/CustomStylesSelect";
 import Select from 'react-select';
 
 
-const RegisterForm = ({ id, onClose, onAdd }) => {
+const RegisterForm = ({ onClose, onAdd }) => {
     const loginInput = useRef(null);
     const passwordInput = useRef(null);
     const nameInput = useRef(null);
@@ -99,7 +99,6 @@ const RegisterForm = ({ id, onClose, onAdd }) => {
     }
 
     return <form
-        id={id}
         onClick={(e) => e.stopPropagation()}
         onSubmit={submitHandler}
         className="bg-[#161c28] min-w-[360px] flex flex-col p-8 py-10 rounded-xl shadow-xl gap-4 max-sm:px-4 relative">

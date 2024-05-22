@@ -1,5 +1,8 @@
-import { Await, useLoaderData } from "react-router-dom";
+import { FaUser } from "react-icons/fa";
+import { Await, Link, useLoaderData } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { IoMdArrowRoundBack } from "react-icons/io";
+
 
 const UserInfo = () => {
     const users = useLoaderData();
@@ -11,8 +14,24 @@ const UserInfo = () => {
     return (
 
         <Await>
-            {user ? <section className="flex">
-                <div className="bg-[#151d28] rounded-xl flex flex-col gap-1 h-max p-8">
+            {user ? <section className="flex items-center justify-center w-full">
+                <div className="relative bg-[#151d28] rounded-xl flex flex-col gap-1 h-max p-20 items-center min-w-[700px] max-md:min-w-[90vw]">
+                    <div className="text-purple-600 bg-purple-400/20 w-min p-6 rounded-xl mb-6 flex items-center gap-4 cursor-pointer text-[500%]">
+                        <FaUser />
+                    </div>
+                    <div>
+                        {user.name}
+                    </div>
+                    <div>
+                        {user.job === 'owner' ?
+                            <div className="border-2 p-2 rounded-xl text-red-600 border-red-600">Владелец</div>
+                            : user.job == 'buyer' ?
+                                <div className="border-2 p-2 rounded-xl text-green-600 border-green-600">Байер</div> :
+                                <div className="border-2 p-2 rounded-xl text-yellow-600 border-yellow-600">Админ</div>}
+                    </div>
+                    <div className="mt-4 p-2 border-b-[1px] w-full text-center border-gray-500">
+                        ИНФОРМАЦИЯ
+                    </div>
                     <div>
                         Имя: {user.name}
                     </div>
@@ -27,6 +46,12 @@ const UserInfo = () => {
                     </div>
                     <div>
                         Дата регистрации: {user.date}
+                    </div>
+                    <div className="absolute top-[-15%] right-[-15%] max-md:right-0">
+                        <Link to='/main/users' className="flex items-center gap-4 text-xl rounded-xl bg-[#151d28] p-4">
+                            <IoMdArrowRoundBack />
+                            Назад
+                        </Link>
                     </div>
                 </div>
             </section> :
