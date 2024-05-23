@@ -137,7 +137,7 @@ const UsersPage = () => {
             <div className="w-full bg-[#151d28] rounded-xl flex flex-col mt-8 h-max">
                 <div className='w-full p-6 flex items-center gap-4 justify-between'>
                     ПОЛЬЗОВАТЕЛИ
-                    <Button variant="contained" color="secondary"><span className="font-[700] max-sm:text-[12px]" onClick={() => setAddingUser(true)}>ДОБАВИТЬ ПОЛЬЗОВАТЕЛЯ</span></Button>
+                    <Button variant="contained" color="secondary" onClick={() => setAddingUser(true)}><span className="font-[700] max-sm:text-[12px]" >ДОБАВИТЬ ПОЛЬЗОВАТЕЛЯ</span></Button>
                 </div>
                 <Box className='px-6 w-full h-[60vh] max-sm:px-2 max-sm:gap-1'>
                     <DataGrid

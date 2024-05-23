@@ -13,7 +13,7 @@ export const getUsers = async () => {
             name: 'Бtest1',
             email: 'test1@gmail.com',
             telegram: 'test1telegram1',
-            job: 'owner',
+            job: 'buyer',
             status: 'active',
         },
         {

@@ -3,17 +3,27 @@ import LoginInput from "../Login/Input"
 import { Button } from "@mui/material"
 import Select from 'react-select';
 import { customStyles } from "../Users/CustomStylesSelect";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { addNewProject } from "../../util/addNewProject";
+import { getUsers } from "../../util/getUsers";
 
 const AddProjectForm = ({ onClose, projectsAmount, onAdd }) => {
+    const [options, setOptions] = useState([]);
     const nameInput = useRef(null);
-    const options = [
-        { value: 'buyer-id1', label: 'Байер1' },
-        { value: 'buyer-id2', label: 'Байер2' },
-        { value: 'buyer-id3', label: 'Байер3' },
-
-    ]
+    useEffect(() => {
+        const getData = async () => {
+            const data = await getUsers();
+            const buyers = data.filter(user => user.job == 'buyer');
+            const select = buyers.map(user => {
+                return {
+                    value: user.id,
+                    label: user.name
+                }
+            })
+            setOptions(select);
+        }
+        getData();
+    }, [])
 
     const [buyer, setBuyer] = useState(options[0]);
 
@@ -58,6 +68,7 @@ const AddProjectForm = ({ onClose, projectsAmount, onAdd }) => {
         <div className="text-gray-500 mt-2 text-sm">Отвественный байер</div>
         <Select
             defaultValue={options[0]}
+            placeholder="Отвественный баер"
             options={options}
             styles={customStyles}
             className='w-full'

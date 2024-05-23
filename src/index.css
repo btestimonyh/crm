@@ -29,6 +29,7 @@
 
 body {
   width: 100vw;
+  overflow: hidden
 }
 
 input {
@@ -82,5 +83,6 @@ section {
     padding-right: 0px!important;
   }
 }
-
-
+.group-header {
+  background-color: #152435;
+}

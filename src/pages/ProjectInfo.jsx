@@ -29,55 +29,81 @@ const ProjectInfo = () => {
     const projects = useLoaderData();
     const { id } = useParams();
     const project = projects.find(project => project.id == id);
+    const [showRows, setShowRows] = useState([]);
 
     const [groupByField, setGroupByField] = useState("");
 
+    if(!project.leads){
+        return <section>В этом проекте еще нет лидов</section>
+    }
+    
     const leads = project.leads.map((el, index) => ({
         id: index,
         ...el
     }));
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const groupedLeads = useMemo(() => groupByField ? groupBy(leads, groupByField) : { All: leads }, [leads, groupByField]);
 
     const rows = [];
     let rowId = 0;
 
     for (const [group, items] of Object.entries(groupedLeads)) {
+        const totalIsFtd = items.reduce((total, lead) => {
+            if (lead.isFtd === "true") {
+                return total + 1;
+            }
+            return total;
+        }, 0);
+        const totalrdCount = items.reduce((total, lead) => {
+            return total + parseInt(lead.rdCount);
+        }, 0)
+
+
         if (groupByField) {
             rows.push({
                 id: `${groupByField}-${group}`,
                 isGroupHeader: true,
-                groupName: group,
+                groupName: `${group} (${items.length})`,
+                isFtd: totalIsFtd,
+                rdCount: totalrdCount,
             });
         }
-        items.forEach(item => {
-            rows.push({
-                id: `item-${rowId++}`,
-                ...item,
-                isGroupHeader: false,
+
+        if (!groupByField || !showRows.includes(`${groupByField}-${group}`)) {
+            items.forEach(item => {
+                rows.push({
+                    id: `item-${rowId++}`,
+                    ...item,
+                    isGroupHeader: false,
+                });
             });
-        });
+        }
     }
 
-    // const columns = [
-    //     ...leadsTitle,
-    //     // ...(groupByField ? [{
-    //     //     field: 'groupName',
-    //     //     headerName: groupByField,
-    //     //     flex: 1,
-    //     //     renderCell: (params) => params.row.isGroupHeader ? <strong>{params.value}</strong> : null
-    //     // }] : [])
-    // ];
+    const filteredLeadTitle = leadsTitle
+        .filter(column => column.field !== 'id')
+        .map(column => ({
+            ...column,
+            sortable: !groupByField
+        }));
 
-    const columns = leadsTitle.map(column => ({
-        ...column,
-        sortable: !groupByField // встановлюємо sortable у false, якщо groupByField дорівнює true
-    }));
+
+    const columns = [
+        ...(groupByField ? [{
+            field: 'groupName',
+            headerName: groupByField,
+            sortable: false,
+            disableColumnMenu: true,
+            flex: 1,
+            renderCell: (params) => params.row.isGroupHeader ? <div>{params.value}</div> : null
+        }] : []),
+        ...filteredLeadTitle,
+    ];
 
     const uniqueFields = Object.keys(leads[0]);
     const options = uniqueFields.flatMap(field => {
         const uniqueValues = getUniqueValues(leads, field);
-        // Включаємо в опції тільки ті поля, у яких більше одного унікального значення і які не є "id"
         return uniqueValues.length > 1 && (field !== 'id' && field !== 'firstName' && field !== 'lastName') ? [{ value: field, label: field }] : [];
     });
 
@@ -89,8 +115,8 @@ const ProjectInfo = () => {
     };
 
     return (
-        <section className="w-full">
-            <div className="relative w-full bg-[#151d28] rounded-xl pt-24 max-sm:mt-[-46px]">
+        <section className="w-full mb-10">
+            {leads ? <div className="relative w-full bg-[#151d28] rounded-xl z-[0] pt-24 max-sm:pt-10">
                 <div className='text-gray-500 text-sm mt-4 pl-2 ml-8 mb-2'>
                     Группирование
                 </div>
@@ -101,7 +127,7 @@ const ProjectInfo = () => {
                     className='w-[500px] max-xl:w-[300px] max-lg:w-[260px] max-md:w-full ml-8 mb-8 max-md:ml-1'
                     placeholder=''
                 />
-                <Box className="px-6 w-full h-[60vh] max-sm:px-2 max-sm:gap-1">
+                <Box className="px-6 w-full h-[65vh] max-sm:px-2 max-sm:gap-1">
                     <DataGrid
                         sx={{
                             color: "white",
@@ -116,11 +142,28 @@ const ProjectInfo = () => {
                         sortModel={sortModel}
                         onSortModelChange={(newModel) => setSortModel(newModel)}
                         rows={rows}
+                        initialState={{
+                            pagination: {
+                                style: { color: 'white' },
+                                paginationModel: { page: 0, pageSize: 15 },
+                            },
+                        }}
+                        // eslint-disable-next-line no-unused-vars
+                        onRowClick={(params, event) => {
+                            if (params.row.isGroupHeader) {
+                                console.log('HEADER ROW');
+                                const groupId = params.row.id;
+                                if (showRows.includes(groupId)) {
+                                    setShowRows(showRows.filter(id => id !== groupId));
+                                } else {
+                                    setShowRows([...showRows, groupId]);
+                                }
+                            }
+                        }}
                         columns={columns}
                         getRowClassName={(params) => (params.row.isGroupHeader ? 'group-header' : '')}
                         pageSizeOptions={[5, 10, 15, 20]}
                         className="cursor-pointer"
-                        onColumnHeaderClick={() => { }}
 
                     />
                 </Box>
@@ -130,7 +173,9 @@ const ProjectInfo = () => {
                         Назад
                     </Link>
                 </div>
-            </div>
+            </div> :
+                <div>Пока еще нет лидов</div>}
+
         </section>
     );
 };
