@@ -31,9 +31,8 @@ const AddProjectForm = ({ onClose, projectsAmount, onAdd }) => {
             subs: 0,
             ftd: 0,
             rd: 0,
-            buyers: [
-                buyer.value
-            ]
+            leads: [],
+            buyerId: buyer.value
         }
 
         addNewProject(data);
