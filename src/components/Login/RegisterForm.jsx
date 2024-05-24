@@ -22,8 +22,8 @@ const RegisterForm = ({ onClose, onAdd }) => {
     const [loginError, setLoginError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [nameError, setNameError] = useState(false);
-    const [subNameError, setSubNameError] = useState(false);
-    const [tagError, setTagError] = useState(false);
+    // const [subNameError, setSubNameError] = useState(false);
+    // const [tagError, setTagError] = useState(false);
     const [telegramErorr, setTelegramError] = useState(false);
     const [job, setJob] = useState('buyer');
 
@@ -73,12 +73,12 @@ const RegisterForm = ({ onClose, onAdd }) => {
         const id = uuidv4();
         const data = {
             userId: id,
-            id: 10,
+            // id: 10,
             email: loginValue,
             password: passwordValue,
             name: nameValue,
-            subName: subNameValue,
-            tag: tagValue,
+            // subName: subNameValue,
+            // tag: tagValue,
             telegram: telegramValue,
             status: 'active',
             job: job,
