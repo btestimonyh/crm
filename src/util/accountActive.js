@@ -1,10 +1,11 @@
 export const accountActive = async (account) => {
     console.log(account);
-    
+
     if (account.status == 'active') {
-        // тут запит шоб встановити аккаунт не активним
+        const accountToChange = { ...account,status: 'inactive' };
+        // цей accountToChange треба поміняти замість account в базі
     }
     else {
-        //тут запит шоб встановити аккаунт активним
+        const accountToChange = { ...account,status: 'active' };
     }
 }
