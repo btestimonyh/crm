@@ -56,7 +56,7 @@ const LoginForm = () => {
         <p className="text-sm text-gray-500">Пожалуйста, войдите в свою учетную запись</p>
         <LoginInput placeholder="Почта" ref={loginInput} error={loginError}/>
         <LoginInput placeholder="Пароль" type='password' ref={passwordInput} error={passwordError}/>
-        {errorAccount && <div className="text-sm text-red-500 font-[400]">Вы ввели неверные данные, спробуйте еще раз</div>}
+        {errorAccount && <div className="text-sm text-red-500 font-[400]">Вы ввели неверные данные, попробуйте еще раз</div>}
         <div className="flex items-center justify-between">
             <div className="text-gray-500 text-sm -m-3">
                 <Checkbox color="secondary" />

@@ -129,6 +129,7 @@ const UsersPage = () => {
 
     })
 
+    const filterdTitle = modifiedTable.filter(column => column.field !== 'id');
 
 
     return <section>
@@ -155,7 +156,7 @@ const UsersPage = () => {
                             noRowsLabel: 'Пользователи не найдены', // Тут ви можете вказати свій власний текст
                         }}
                         rows={activeData}
-                        columns={modifiedTable}
+                        columns={filterdTitle}
                         initialState={{
                             pagination: {
                                 style: { color: 'white' },

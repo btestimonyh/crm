@@ -119,11 +119,11 @@ const RegisterForm = ({ onClose, onAdd }) => {
         {/* <p className="text-sm text-gray-500">Пожалуйста, введите свои данные</p> */}
         <LoginInput placeholder="Почта" ref={loginInput} error={loginError} />
         <LoginInput placeholder="Пароль" ref={passwordInput} error={passwordError} />
-        <div className="flex gap-2">
+        {/* <div className="flex gap-2"> */}
             <LoginInput placeholder="Имя" ref={nameInput} error={nameError} />
-            <LoginInput placeholder='Фамилия' ref={subNameInput} error={subNameError} />
-        </div>
-        <LoginInput placeholder='Тэг' ref={tagInput} error={tagError} />
+            {/* <LoginInput placeholder='Фамилия' ref={subNameInput} error={subNameError} /> */}
+        {/* </div> */}
+        {/* <LoginInput placeholder='Тэг' ref={tagInput} error={tagError} /> */}
         <LoginInput placeholder='Telegram без @' ref={telegramInput} error={telegramErorr} />
         <Select
             defaultValue={options[0]}
