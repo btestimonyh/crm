@@ -1,7 +1,7 @@
 export const getUsers = async () => {
     // implementing some test functionality here
     // testing how PR will work
-
+    const token = localStorage.getItem('token');
     //тут моя строка для тесту
     //ше одна строка
 

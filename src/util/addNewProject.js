@@ -1,4 +1,6 @@
 export const addNewProject = (project) =>{
+    const token = localStorage.getItem('token');
+    
     console.log(project);
 }
 

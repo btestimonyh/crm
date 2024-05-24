@@ -1,5 +1,7 @@
 export const getProjects = async () => {
     // повертає всі проекти
+    const token = localStorage.getItem('token');
+    
     const PROJECTS_FOR_TEST = [
         {
             id: 1,
