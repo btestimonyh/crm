@@ -33,7 +33,7 @@ const RegisterForm = ({ onClose, onAdd }) => {
         const loginValue = loginInput.current.value;
         const passwordValue = passwordInput.current.value;
         const nameValue = nameInput.current.value;
-        const subNameValue = subNameInput.current.value;
+        // const subNameValue = subNameInput.current.value;
         const tagValue = tagInput.current.value;
         const telegramValue = telegramInput.current.value;
 
@@ -54,16 +54,16 @@ const RegisterForm = ({ onClose, onAdd }) => {
         } else {
             setNameError(false);
         }
-        if (subNameValue.length < 3) {
-            return setSubNameError(true);
-        } else {
-            setSubNameError(false);
-        }
-        if (tagValue.length < 1) {
-            return setTagError(true);
-        } else {
-            setTagError(false);
-        }
+        // if (subNameValue.length < 3) {
+        //     return setSubNameError(true);
+        // } else {
+        //     setSubNameError(false);
+        // }
+        // if (tagValue.length < 1) {
+        //     return setTagError(true);
+        // } else {
+        //     setTagError(false);
+        // }
         if (telegramValue.length < 3) {
             return setTelegramError(true);
         } else {
@@ -78,7 +78,7 @@ const RegisterForm = ({ onClose, onAdd }) => {
             password: passwordValue,
             name: nameValue,
             // subName: subNameValue,
-            // tag: tagValue,
+            tag: tagValue,
             telegram: telegramValue,
             status: 'active',
             job: job,
@@ -123,7 +123,7 @@ const RegisterForm = ({ onClose, onAdd }) => {
             <LoginInput placeholder="Имя" ref={nameInput} error={nameError} />
             {/* <LoginInput placeholder='Фамилия' ref={subNameInput} error={subNameError} /> */}
         {/* </div> */}
-        {/* <LoginInput placeholder='Тэг' ref={tagInput} error={tagError} /> */}
+        <LoginInput placeholder='Тэг' ref={tagInput} />
         <LoginInput placeholder='Telegram без @' ref={telegramInput} error={telegramErorr} />
         <Select
             defaultValue={options[0]}
