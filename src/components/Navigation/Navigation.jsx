@@ -57,9 +57,9 @@ const Navigation = () => {
                     <AiOutlineCloseSquare />
                 </div>
             </nav>}
-            <div className="fixed top-4 left-4 text-3xl z-8 bg-gray-600/50 p-2 rounded-[50%] md:hidden" onClick={() => setShowNavigation(true)}>
+            {!showNavigation &&<div className="fixed top-4 left-4 text-3xl z-10 bg-gray-600 p-2 rounded-[50%] md:hidden" onClick={() => setShowNavigation(true)}>
                 <RxHamburgerMenu />
-            </div>
+            </div>}
 
         </>
     )

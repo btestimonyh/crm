@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Input } from "@mui/material";
 
-const LoginInput = React.forwardRef(({ placeholder, type, error }, ref) => {
+const LoginInput = React.forwardRef(({ placeholder, type, error,className }, ref) => {
     const inputRef = useRef(null);
     useEffect(() => {
         if (ref) {
@@ -19,7 +19,7 @@ const LoginInput = React.forwardRef(({ placeholder, type, error }, ref) => {
             fullWidth
             placeholder={placeholder}
             type={type}
-            className="bg-[#236797]/50 rounded-sm px-2 py-1"
+            className={`bg-[#236797]/50 rounded-sm px-2 py-1 ${className}`}
             inputRef={inputRef}
         />
     );

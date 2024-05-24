@@ -6,6 +6,15 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link, useLoaderData, useParams } from "react-router-dom";
 import { leadsTitle } from "../components/Projects/leadsTitle";
 import { customStyles } from "../components/Users/CustomStylesSelect";
+import CopyToClipboard from "react-copy-to-clipboard";
+import { FaCopy } from "react-icons/fa";
+import ProjecCircle from "../components/Projects/ProjectCircle";
+import { CiFacebook } from "react-icons/ci";
+import { RiMoneyDollarCircleFill } from "react-icons/ri";
+import { GiReceiveMoney } from "react-icons/gi";
+import { PiUsersThreeFill } from "react-icons/pi";
+
+
 
 const groupBy = (array, key) => {
     return array.reduce((result, currentValue) => {
@@ -30,13 +39,40 @@ const ProjectInfo = () => {
     const { id } = useParams();
     const project = projects.find(project => project.id == id);
     const [showRows, setShowRows] = useState([]);
+    const [isCopy, setIsCopy] = useState(false);
 
     const [groupByField, setGroupByField] = useState("");
+  
 
-    if(!project.leads){
-        return <section>В этом проекте еще нет лидов</section>
+
+    if (!project.leads) {
+        return <section className="bg-[#151d28] rounded-xl p-4 relative flex items-center justify-center text-2xl">
+            В этом проекте нет лидов
+            <div className="absolute top-4 right-4 max-md:right-0">
+                <Link to="/main/projects" className="flex items-center gap-4 text-xl rounded-xl bg-[#151d28] p-4">
+                    <IoMdArrowRoundBack />
+                    Назад
+                </Link>
+            </div>
+        </section>
     }
-    
+    const IsFtdAmount = project.leads.reduce((total, lead) => {
+        if (lead.isFtd === "true") {
+            return total + 1;
+        }
+        return total;
+    }, 0);
+    const rdCountAmount = project.leads.reduce((total, lead) => {
+        return total + parseInt(lead.rdCount);
+    }, 0);
+    // const fbStatusAmount = project.leads.reduce((total, lead) => {
+    //     if (lead.fbStatus === "good") {
+    //         return total + 1;
+    //     }
+    //     return total;
+    // }, 0);
+
+
     const leads = project.leads.map((el, index) => ({
         id: index,
         ...el
@@ -95,8 +131,9 @@ const ProjectInfo = () => {
             headerName: groupByField,
             sortable: false,
             disableColumnMenu: true,
-            flex: 1,
-            renderCell: (params) => params.row.isGroupHeader ? <div>{params.value}</div> : null
+            // flex: 1,
+            minWidth: 150,
+            renderCell: (params) => params.row.isGroupHeader ? <div className="px-2">{params.value}</div> : null
         }] : []),
         ...filteredLeadTitle,
     ];
@@ -115,19 +152,49 @@ const ProjectInfo = () => {
     };
 
     return (
-        <section className="w-full mb-10">
+        <section className=" mb-10">
             {leads ? <div className="relative w-full bg-[#151d28] rounded-xl z-[0] pt-24 max-sm:pt-10">
-                <div className='text-gray-500 text-sm mt-4 pl-2 ml-8 mb-2'>
-                    Группирование
+                <div className="w-full grid grid-cols-6 max-md:grid-cols-3 mt-10 px-4 gap-4">
+                    <ProjecCircle title='Лиды' bg='bg-green-700/70' icon={<PiUsersThreeFill />}>{project.leads.length}</ProjecCircle>
+                    <ProjecCircle title='isFtd' bg='bg-red-600/70' icon={<GiReceiveMoney />}>{IsFtdAmount}</ProjecCircle>
+                    <ProjecCircle title='rdCount' bg='bg-blue-500/70' icon={<RiMoneyDollarCircleFill />}>{rdCountAmount}</ProjecCircle>
                 </div>
-                <Select
-                    onChange={handleFilter}
-                    styles={customStyles}
-                    options={options}
-                    className='w-[500px] max-xl:w-[300px] max-lg:w-[260px] max-md:w-full ml-8 mb-8 max-md:ml-1'
-                    placeholder=''
-                />
-                <Box className="px-6 w-full h-[65vh] max-sm:px-2 max-sm:gap-1">
+
+                <div className="flex gap-6 max-md:flex-col-reverse max-md:items-start max-md:px-2 max-md:gap-1">
+                    <div>
+                        <div className='text-gray-500 text-sm mt-4 pl-2 ml-8 mb-2'>
+                            Группирование
+                        </div>
+                        <Select
+                            onChange={handleFilter}
+                            styles={customStyles}
+                            options={options}
+                            className='w-[500px] max-xl:w-[300px] max-lg:w-[260px] max-md:w-[90vw] ml-8 mb-8 max-md:ml-1'
+                            placeholder=''
+                        />
+                    </div>
+                    <div>
+                        <div className='text-gray-500 text-sm mt-4 pl-2 mb-2'>
+                            Pixel ID
+                        </div>
+
+                        <CopyToClipboard text={project.pixelId}>
+                            <div onClick={() => {
+                                setIsCopy(true)
+                                setTimeout(() => setIsCopy(false), 1000)
+                            }}
+
+                                className="relative flex items-center gap-4 max-md:ml-4 border-[1px] border-gray-600 rounded-xl p-2 cursor-pointer">
+                                <div>{project.pixelId}</div>
+                                <div><FaCopy /></div>
+                                {isCopy && <div className="absolute top-full left-1/2 text-[10px]">Скопировано!</div>}
+                            </div>
+                        </CopyToClipboard>
+                    </div>
+
+                </div>
+
+                <Box className="px-6 w-full h-[65vh] max-sm:px-4 max-sm:gap-1">
                     <DataGrid
                         sx={{
                             color: "white",
@@ -174,7 +241,7 @@ const ProjectInfo = () => {
                     </Link>
                 </div>
             </div> :
-                <div>Пока еще нет лидов</div>}
+                <section>Пока еще нет лидов</section>}
 
         </section>
     );

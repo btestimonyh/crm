@@ -129,7 +129,7 @@ const UsersPage = () => {
 
     })
 
-    const filterdTitle = modifiedTable.filter(column => column.field !== 'id');
+    const filterdTitle = modifiedTable.filter(column => column.field !== 'userId');
 
 
     return <section>
@@ -140,11 +140,13 @@ const UsersPage = () => {
                     ПОЛЬЗОВАТЕЛИ
                     <Button variant="contained" color="secondary" onClick={() => setAddingUser(true)}><span className="font-[700] max-sm:text-[12px]" >ДОБАВИТЬ ПОЛЬЗОВАТЕЛЯ</span></Button>
                 </div>
-                <Box className='px-6 w-full h-[60vh] max-sm:px-2 max-sm:gap-1'>
+                <Box className='px-6 w-full h-[60vh] max-sm:px-4 max-sm:gap-1' sx={{ overflowX: 'auto' }}>
+                    
                     <DataGrid
                         sx={{
                             color: 'white',
                             border: 'none',
+                            width:'850px',
                             '@media (max-width: 600px)': { // Тут ви вказуєте медіа-запит для мобільних пристроїв (менше 600px)
                                 fontSize: '12px',
                                 // marginRight: '-20px' // Встановлюємо розмір шрифту для мобільних пристроїв

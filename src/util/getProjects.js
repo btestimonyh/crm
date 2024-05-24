@@ -10,6 +10,7 @@ export const getProjects = async () => {
             ftd: 10,
             rd: 10,
             buyerId: 'id1',
+            pixelId:'123',
             leads: [
                 {
                     "firstName": "Lead1",

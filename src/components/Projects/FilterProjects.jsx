@@ -48,7 +48,7 @@ const FilterProjects = ({ filterProjects }) => {
                         styles={customStyles}
                         options={options}
                         defaultValue={{ value: 'all', label: 'Все'}}
-                        className='w-[500px] max-xl:w-[300px] max-lg:w-[260px] max-md:w-[90vw]'
+                        className='w-[500px] max-xl:w-[300px] max-lg:w-[260px] max-md:w-[90vw] relative'
                         placeholder='' />
                 </div>
 

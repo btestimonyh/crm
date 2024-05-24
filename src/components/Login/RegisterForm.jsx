@@ -15,7 +15,7 @@ const RegisterForm = ({ onClose, onAdd }) => {
     const loginInput = useRef(null);
     const passwordInput = useRef(null);
     const nameInput = useRef(null);
-    const subNameInput = useRef(null);
+    // const subNameInput = useRef(null);
     const tagInput = useRef(null);
     const telegramInput = useRef(null);
 
