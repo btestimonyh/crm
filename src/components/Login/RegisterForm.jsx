@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import LoginInput from "./Input";
 import { Button } from "@mui/material";
 import { registerUser } from "../../util/registerUser";
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 import { formatDateTime } from "../../util/front/formatDate";
 import { IoClose } from "react-icons/io5";
 import { customStyles } from "../Users/CustomStylesSelect";
@@ -70,10 +70,10 @@ const RegisterForm = ({ onClose, onAdd }) => {
             setTelegramError(false);
         }
 
-        const id = uuidv4();
+        // const id = uuidv4();
         const data = {
-            userId: id,
-            // id: 10,
+            // userId: id,
+            // id: id,
             email: loginValue,
             password: passwordValue,
             name: nameValue,
@@ -87,7 +87,7 @@ const RegisterForm = ({ onClose, onAdd }) => {
 
         registerUser(data);
         onClose();
-        onAdd(data);
+        onAdd();
         // window.location.href = '/'
     }
     const ROLE = useSelector(role);

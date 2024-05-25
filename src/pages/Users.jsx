@@ -17,6 +17,7 @@ const UsersPage = () => {
     const [activeFilter, setActiveFilter] = useState(false);
     const [activeStatus, setActiveStatus] = useState(false);
     const [addingUser, setAddingUser] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const ROLE = useSelector(role);
     const navigate = useNavigate();
@@ -70,9 +71,17 @@ const UsersPage = () => {
         setActiveData(updatedData);
     }
 
-    const addHandler = (account) => {
-        setActiveData([...activeData, account])
-    }
+    useEffect(() => {
+        setActiveData(fullData);
+    }, [fullData]);
+
+    const addHandler = () => {
+        setIsLoading(true);
+        setActiveData(fullData);
+        setTimeout(()=>{
+            setIsLoading(false);
+        }, 500)
+    };
 
     const modifiedTable = usersTitle.map((el) => {
         if (el.field === 'name') {
@@ -140,36 +149,39 @@ const UsersPage = () => {
                     ПОЛЬЗОВАТЕЛИ
                     <Button variant="contained" color="secondary" onClick={() => setAddingUser(true)}><span className="font-[700] max-sm:text-[12px]" >ДОБАВИТЬ ПОЛЬЗОВАТЕЛЯ</span></Button>
                 </div>
-                <Box className='px-6 w-full h-[60vh] max-sm:px-4 max-sm:gap-1' sx={{ overflowX: 'auto' }}>
-                    
-                    <DataGrid
-                        sx={{
-                            color: 'white',
-                            border: 'none',
-                            width:'850px',
-                            '@media (max-width: 600px)': { // Тут ви вказуєте медіа-запит для мобільних пристроїв (менше 600px)
-                                fontSize: '12px',
-                                // marginRight: '-20px' // Встановлюємо розмір шрифту для мобільних пристроїв
-                            },
-                            // marginRight: '200px',
-                        }}
-                        // className="text-[#fff]"
-                        localeText={{
-                            noRowsLabel: 'Пользователи не найдены', // Тут ви можете вказати свій власний текст
-                        }}
-                        rows={activeData}
-                        columns={filterdTitle}
-                        initialState={{
-                            pagination: {
-                                style: { color: 'white' },
-                                paginationModel: { page: 0, pageSize: 10 },
-                            },
-                        }}
-                        pageSizeOptions={[5, 10, 15, 20]}
-                    // checkboxSelection
-                    // disableRowSelectionOnClick
-                    />
-                </Box>
+                {isLoading ? <div> Loading ... </div> :
+                    <Box className='px-6 w-full h-[60vh] max-sm:px-4 max-sm:gap-1' sx={{ overflowX: 'auto' }}>
+
+                        <DataGrid
+                            sx={{
+                                color: 'white',
+                                border: 'none',
+                                width: 850,
+                                '@media (max-width: 600px)': { // Тут ви вказуєте медіа-запит для мобільних пристроїв (менше 600px)
+                                    fontSize: '12px',
+                                    // marginRight: '-20px' // Встановлюємо розмір шрифту для мобільних пристроїв
+                                },
+                                // marginRight: '200px',
+                            }}
+                            // className="text-[#fff]"
+                            localeText={{
+                                noRowsLabel: 'Пользователи не найдены', // Тут ви можете вказати свій власний текст
+                            }}
+                            rows={activeData}
+                            columns={filterdTitle}
+                            initialState={{
+                                pagination: {
+                                    style: { color: 'white' },
+                                    paginationModel: { page: 0, pageSize: 10 },
+                                },
+                            }}
+                            pageSizeOptions={[5, 10, 15, 20]}
+                        // checkboxSelection
+                        // disableRowSelectionOnClick
+                        />
+                    </Box>
+                }
+
 
             </div>
             {addingUser &&
