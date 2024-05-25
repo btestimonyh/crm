@@ -10,7 +10,7 @@ import Modal from "../components/Modal/Modal";
 import RegisterForm from "../components/Login/RegisterForm";
 import { useSelector } from "react-redux";
 import { role } from "../store/store";
-import { Oval } from "react-loader-spinner";
+import { TailSpin } from "react-loader-spinner";
 
 
 const UsersPage = () => {
@@ -153,12 +153,13 @@ const UsersPage = () => {
                     ПОЛЬЗОВАТЕЛИ
                     <Button variant="contained" color="secondary" onClick={() => setAddingUser(true)}><span className="font-[700] max-sm:text-[12px]" >ДОБАВИТЬ ПОЛЬЗОВАТЕЛЯ</span></Button>
                 </div>
-                {isLoading ? <div className="w-full h-[60vh] flex items-center justify-center"> <Oval
+                {isLoading ? <div className="w-full h-[60vh] flex items-center justify-center"> <TailSpin
                     visible={true}
-                    height="180"
-                    width="180"
-                    color="#4fa94d"
-                    ariaLabel="oval-loading"
+                    height="80"
+                    width="80"
+                    color="gray"
+                    ariaLabel="tail-spin-loading"
+                    radius="1"
                     wrapperStyle={{}}
                     wrapperClass=""
                 /> </div> :

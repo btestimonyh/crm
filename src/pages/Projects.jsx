@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { Await, useLoaderData } from "react-router-dom";
 // import FilterProjects from "../components/Projects/FilterProjects";
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, Button } from "@mui/material";
@@ -10,14 +10,14 @@ import { useNavigate } from "react-router-dom";
 import FilterProjects from "../components/Projects/FilterProjects";
 import { useSelector } from "react-redux";
 import { role } from "../store/store";
-import { Oval } from "react-loader-spinner";
+import {TailSpin } from "react-loader-spinner";
 
 const Projects = () => {
     const projects = useLoaderData();
     const [activeProjects, setActiveProjects] = useState([]);
     const [addingProject, setAddingProject] = useState(false);
     const ROLE = useSelector(role);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const ADMIN = ROLE === 'admin' || ROLE === 'owner';
     const navigate = useNavigate();
 
@@ -51,9 +51,8 @@ const Projects = () => {
         } else {
             setActiveProjects(projects);
         }
+        setIsLoading(false);
     }, [ROLE, projects, filterHandler]);
-
-
 
     return <section>
         {ADMIN && <div className="w-full bg-[#151d28] rounded-xl flex">
@@ -66,43 +65,47 @@ const Projects = () => {
                 <div>ПРОЕКТЫ</div>
                 {ADMIN && <Button variant="contained" color="secondary" onClick={() => setAddingProject(true)}><span className="font-[700] max-sm:text-[12px]" >ДОБАВИТЬ ПРОЕКТ</span></Button>}
             </div>
-            {isLoading ? <div className="w-full h-[60vh] flex items-center justify-center"> <Oval
-                    visible={true}
-                    height="180"
-                    width="180"
-                    color="#4fa94d"
-                    ariaLabel="oval-loading"
-                    wrapperStyle={{}}
-                    wrapperClass=""
-                /> </div> :
-            <Box className='px-6 w-full h-[60vh] max-sm:px-2 max-sm:gap-1'>
-                <DataGrid
-                    sx={{
-                        color: 'white',
-                        border: 'none',
-                        '@media (max-width: 600px)': {
-                            fontSize: '12px',
-                        },
+            {isLoading ? <div className="w-full h-[60vh] flex items-center justify-center"> <TailSpin
+                visible={true}
+                height="80"
+                width="80"
+                color="gray"
+                ariaLabel="tail-spin-loading"
+                radius="1"
+                wrapperStyle={{}}
+                wrapperClass=""
+            /> </div> :
+                <Await resolve={projects}>
+                    <Box className='px-6 w-full h-[60vh] max-sm:px-2 max-sm:gap-1'>
+                        <DataGrid
+                            sx={{
+                                color: 'white',
+                                border: 'none',
+                                '@media (max-width: 600px)': {
+                                    fontSize: '12px',
+                                },
 
-                    }}
-                    localeText={{
-                        noRowsLabel: 'Проекты не найдены',
-                    }}
-                    rows={activeProjects}
-                    columns={projectsTitle}
-                    initialState={{
-                        pagination: {
-                            style: { color: 'white' },
-                            paginationModel: { page: 0, pageSize: 10 },
-                        },
-                    }}
-                    pageSizeOptions={[5, 10, 15, 20]}
-                    onRowClick={handleRowClick}
-                    className="cursor-pointer"
-                // checkboxSelection
-                // disableRowSelectionOnClick
-                />
-            </Box>}
+                            }}
+                            localeText={{
+                                noRowsLabel: '',
+                            }}
+                            rows={activeProjects}
+                            columns={projectsTitle}
+                            initialState={{
+                                pagination: {
+                                    style: { color: 'white' },
+                                    paginationModel: { page: 0, pageSize: 10 },
+                                },
+                            }}
+                            pageSizeOptions={[5, 10, 15, 20]}
+                            onRowClick={handleRowClick}
+                            className="cursor-pointer"
+                        // checkboxSelection
+                        // disableRowSelectionOnClick
+                        />
+                    </Box>
+                </Await>
+            }
             {addingProject &&
                 <Modal onClose={() => setAddingProject(false)} id='adding-project-form'>
                     <AddProjectForm onClose={() => setAddingProject(false)} projectsAmount={projects.length} onAdd={addProject} />
