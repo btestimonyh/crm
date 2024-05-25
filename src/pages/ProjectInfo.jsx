@@ -55,22 +55,6 @@ const ProjectInfo = () => {
         getData();
     }, [id])
 
-    // if (!project) {
-    //     return (
-    //         <section className="bg-[#151d28] rounded-xl p-4 relative flex items-center justify-center text-2xl">
-    //             <TailSpin
-    //                 visible={true}
-    //                 height="80"
-    //                 width="80"
-    //                 color="gray"
-    //                 ariaLabel="tail-spin-loading"
-    //                 radius="1"
-    //                 wrapperStyle={{}}
-    //                 wrapperClass=""
-    //             />
-    //         </section>
-    //     );
-    // }
 
     if (!project.leads || project.leads.length == 0) {
         return (
@@ -92,8 +76,16 @@ const ProjectInfo = () => {
         return total;
     }, 0);
     const rdCountAmount = project.leads.reduce((total, lead) => {
-        return total + parseInt(lead.rdCount);
+        return lead.rdCount ? total + parseInt(lead.rdCount) : total + 0;
     }, 0);
+    const rdAmount = project.leads.reduce((total, lead) => {
+        return lead.rdAmount ? total + parseInt(lead.rdAmount) : total + 0;
+    }, 0);
+    const ftdAmount = project.leads.reduce((total, lead) => {
+        return lead.ftdAmount ? total + parseInt(lead.ftdAmount) : total + 0;
+    }, 0);
+
+
     // const fbStatusAmount = project.leads.reduce((total, lead) => {
     //     if (lead.fbStatus === "good") {
     //         return total + 1;
@@ -121,8 +113,14 @@ const ProjectInfo = () => {
             return total;
         }, 0);
         const totalrdCount = items.reduce((total, lead) => {
-            return total + parseInt(lead.rdCount);
-        }, 0)
+            return lead.rdCount ? total + parseInt(lead.rdCount) : total + 0;
+        }, 0);
+        const totalrdAmount = items.reduce((total, lead) => {
+            return lead.rdAmount ? total + parseInt(lead.rdAmount) : total + 0;
+        }, 0);
+        const totalftdAmount = items.reduce((total, lead) => {
+            return lead.ftdAmount ? total + parseInt(lead.ftdAmount) : total + 0;
+        }, 0);
 
 
         if (groupByField) {
@@ -131,7 +129,9 @@ const ProjectInfo = () => {
                 isGroupHeader: true,
                 groupName: `${group} (${items.length})`,
                 isFtd: totalIsFtd,
+                ftdAmount: totalftdAmount,
                 rdCount: totalrdCount,
+                rdAmount: totalrdAmount,
             });
         }
 
@@ -183,10 +183,12 @@ const ProjectInfo = () => {
     return (
         <section className=" mb-10">
             {leads ? <div className="relative w-full bg-[#151d28] rounded-xl z-[0] pt-24 max-sm:pt-10">
-                <div className="w-full grid grid-cols-6 max-md:grid-cols-3 mt-10 px-4 gap-4">
+                <div className="w-full grid grid-cols-6 max-md:grid-cols-3 mt-10 px-4 gap-4 max-[1400px]:grid-cols-5 max-[1200px]:grid-cols-4">
                     <ProjecCircle title='Лиды' bg='bg-green-700/70' icon={<PiUsersThreeFill />}>{project.leads.length}</ProjecCircle>
                     <ProjecCircle title='isFtd' bg='bg-red-600/70' icon={<GiReceiveMoney />}>{IsFtdAmount}</ProjecCircle>
-                    <ProjecCircle title='rdCount' bg='bg-blue-500/70' icon={<RiMoneyDollarCircleFill />}>{rdCountAmount}</ProjecCircle>
+                    <ProjecCircle title='ftdAmount' bg='bg-blue-500/70' icon={<RiMoneyDollarCircleFill />}>{ftdAmount}</ProjecCircle>
+                    <ProjecCircle title='rdCount' bg='bg-red-400/70' icon={<GiReceiveMoney />}>{rdCountAmount}</ProjecCircle>
+                    <ProjecCircle title='rdAmount' bg='bg-blue-800/70' icon={<RiMoneyDollarCircleFill />}>{rdAmount}</ProjecCircle>
                 </div>
 
                 <div className="flex gap-6 max-md:flex-col-reverse max-md:items-start max-md:px-2 max-md:gap-1">

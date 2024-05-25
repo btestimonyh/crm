@@ -43,8 +43,20 @@ export const leadsTitle = [
         disableColumnMenu: true,
     },
     {
+        field: 'ftdAmount',
+        headerName: 'ftdAmount',
+        minWidth: 100,
+        disableColumnMenu: true,
+    },
+    {
         field: 'rdCount',
         headerName: 'rdCount',
+        minWidth: 100,
+        disableColumnMenu: true,
+    },
+    {
+        field: 'rdAmount',
+        headerName: 'rdAmount',
         minWidth: 100,
         disableColumnMenu: true,
     },
