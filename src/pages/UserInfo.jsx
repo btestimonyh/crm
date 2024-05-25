@@ -15,7 +15,6 @@ const UserInfo = () => {
 
     useEffect(() => {
         const getData = async () => {
-
             const data = await getUserById(userId);
             setUser(data);
         }

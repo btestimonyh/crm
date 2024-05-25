@@ -64,7 +64,7 @@ function App() {
           loader: getUsers,
         },
         {
-          path: 'users/:name',
+          path: 'users/:userId',
           element: <UserInfo />,
           loader: getUsers,
         },
