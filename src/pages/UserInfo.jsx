@@ -34,9 +34,9 @@ const UserInfo = () => {
                         {user.name}
                     </div>
                     <div>
-                        {user.job === 'owner' ?
+                        {user.role === 'OWNER' ?
                             <div className="border-2 p-2 rounded-xl text-red-600 border-red-600">Владелец</div>
-                            : user.job == 'buyer' ?
+                            : user.role == 'BUYER' ?
                                 <div className="border-2 p-2 rounded-xl text-green-600 border-green-600">Байер</div> :
                                 <div className="border-2 p-2 rounded-xl text-yellow-600 border-yellow-600">Админ</div>}
                     </div>
@@ -53,7 +53,7 @@ const UserInfo = () => {
                         Telegram: {user.telegram}
                     </div>
                     <div>
-                        Почта: {user.email}
+                        Почта: {user.login}
                     </div>
                     <div>
                         Дата регистрации: {user.date}
