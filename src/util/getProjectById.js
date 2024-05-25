@@ -1,3 +1,4 @@
-export const getProjectById = async (id) =>{
+export const getProjectById = async (id) => {
     //передаю айдішку проекта
+    return 
 }

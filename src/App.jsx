@@ -84,7 +84,7 @@ function App() {
         {
           path: 'projects/:id',
           element: <ProjectInfo />,
-          loader: getProjects,
+          // loader: getProjects,
         }
       ]
     },

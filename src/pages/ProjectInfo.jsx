@@ -3,17 +3,18 @@ import { Box } from "@mui/material";
 import Select from 'react-select';
 import { DataGrid } from "@mui/x-data-grid";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { Link, useLoaderData, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { leadsTitle } from "../components/Projects/leadsTitle";
 import { customStyles } from "../components/Users/CustomStylesSelect";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { FaCopy } from "react-icons/fa";
 import ProjecCircle from "../components/Projects/ProjectCircle";
-import { CiFacebook } from "react-icons/ci";
+// import { CiFacebook } from "react-icons/ci";
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import { GiReceiveMoney } from "react-icons/gi";
 import { PiUsersThreeFill } from "react-icons/pi";
 import { getProjectById } from "../util/getProjectById";
+import { TailSpin } from "react-loader-spinner";
 
 
 
@@ -42,28 +43,47 @@ const ProjectInfo = () => {
 
     const [showRows, setShowRows] = useState([]);
     const [isCopy, setIsCopy] = useState(false);
-    const [project, setProject] = useState({});
+    const [project, setProject] = useState({ leads: false });
     const [groupByField, setGroupByField] = useState("");
 
-    useEffect(()=> {
-        const getData = async () =>{
+    useEffect(() => {
+        const getData = async () => {
             const data = await getProjectById(id);
+            console.log(data)
             setProject(data);
         }
         getData();
-    },[id])
+    }, [id])
 
+    if (!project) {
+        return (
+            <section className="bg-[#151d28] rounded-xl p-4 relative flex items-center justify-center text-2xl">
+                <TailSpin
+                    visible={true}
+                    height="80"
+                    width="80"
+                    color="gray"
+                    ariaLabel="tail-spin-loading"
+                    radius="1"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                />
+            </section>
+        );
+    }
 
     if (!project.leads) {
-        return <section className="bg-[#151d28] rounded-xl p-4 relative flex items-center justify-center text-2xl">
-            В этом проекте нет лидов
-            <div className="absolute top-4 right-4 max-md:right-0">
-                <Link to="/main/projects" className="flex items-center gap-4 text-xl rounded-xl bg-[#151d28] p-4">
-                    <IoMdArrowRoundBack />
-                    Назад
-                </Link>
-            </div>
-        </section>
+        return (
+            <section className="bg-[#151d28] rounded-xl p-4 relative flex items-center justify-center text-2xl">
+                В этом проекте нет лидов
+                <div className="absolute top-4 right-4 max-md:right-0">
+                    <Link to="/main/projects" className="flex items-center gap-4 text-xl rounded-xl bg-[#151d28] p-4">
+                        <IoMdArrowRoundBack />
+                        Назад
+                    </Link>
+                </div>
+            </section>
+        );
     }
     const IsFtdAmount = project.leads.reduce((total, lead) => {
         if (lead.isFtd === "true") {
@@ -88,7 +108,7 @@ const ProjectInfo = () => {
     }));
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const groupedLeads = useMemo(() => groupByField ? groupBy(leads, groupByField) : { All: leads }, [leads, groupByField]);
+    const groupedLeads = groupByField ? groupBy(leads, groupByField) : { All: leads };
 
     const rows = [];
     let rowId = 0;
@@ -115,7 +135,7 @@ const ProjectInfo = () => {
             });
         }
 
-        if (!groupByField || !showRows.includes(`${groupByField}-${group}`)) {
+        if (!groupByField || showRows.includes(`${groupByField}-${group}`)) {
             items.forEach(item => {
                 rows.push({
                     id: `item-${rowId++}`,
