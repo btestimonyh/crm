@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Box } from "@mui/material";
 import Select from 'react-select';
 import { DataGrid } from "@mui/x-data-grid";
@@ -13,6 +13,7 @@ import { CiFacebook } from "react-icons/ci";
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import { GiReceiveMoney } from "react-icons/gi";
 import { PiUsersThreeFill } from "react-icons/pi";
+import { getProjectById } from "../util/getProjectById";
 
 
 
@@ -35,14 +36,22 @@ const getUniqueValues = (array, key) => {
 
 const ProjectInfo = () => {
     const [sortModel, setSortModel] = useState([]);
-    const projects = useLoaderData();
+    // const projects = useLoaderData();
     const { id } = useParams();
-    const project = projects.find(project => project.id == id);
+    // const project = projects.find(project => project.id == id);
+
     const [showRows, setShowRows] = useState([]);
     const [isCopy, setIsCopy] = useState(false);
-
+    const [project, setProject] = useState({});
     const [groupByField, setGroupByField] = useState("");
-  
+
+    useEffect(()=> {
+        const getData = async () =>{
+            const data = await getProjectById(id);
+            setProject(data);
+        }
+        getData();
+    },[id])
 
 
     if (!project.leads) {
