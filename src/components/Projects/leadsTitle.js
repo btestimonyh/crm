@@ -9,7 +9,7 @@ export const leadsTitle = [
     {
         field: 'firstName',
         headerName: 'ИМЯ',
-        minWidth: 100,
+        minWidth: 150,
         disableColumnMenu: true,
     },
     {
@@ -21,13 +21,13 @@ export const leadsTitle = [
     {
         field: 'username',
         headerName: 'USER',
-        minWidth: 100,
+        minWidth: 150,
         disableColumnMenu: true,
     },
     {
         field: 'tgid',
         headerName: 'TG',
-        minWidth: 120,
+        minWidth: 150,
         disableColumnMenu: true,
     },
     {
