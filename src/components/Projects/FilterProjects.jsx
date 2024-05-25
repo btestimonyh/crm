@@ -12,7 +12,7 @@ const FilterProjects = ({ filterProjects }) => {
             const buyers = data.filter(user => user.job == 'buyer');
             const select = buyers.map(user => {
                 return {
-                    value: user.id,
+                    value: user.userId,
                     label: user.name
                 }
             })
