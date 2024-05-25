@@ -82,7 +82,6 @@ const Projects = () => {
                         border: 'none',
                         '@media (max-width: 600px)': {
                             fontSize: '12px',
-
                         },
 
                     }}

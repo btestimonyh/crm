@@ -3,7 +3,7 @@ export const usersTitle = [
         field: 'userId',
         headerName: 'ID',
         disableColumnMenu: true,
-       
+        width: 0,
         // flex: 1,
         // maxWidth: 38,
     },
@@ -23,7 +23,7 @@ export const usersTitle = [
         // flex: 1,
         minWidth: 150,
         disableColumnMenu: true
-        
+
         // editable: true,
     },
     {
@@ -56,9 +56,9 @@ export const usersTitle = [
         headerName: 'ДЕЙСТВИЯ',
         // width: 120,
         // flex: 1,
-        minWidth: 150,
+        // minWidth: 150,
         disableColumnMenu: true,
-        width:'auto'
+        width: 150,
     }
 
 ];
