@@ -1,20 +1,32 @@
 import { FaUser } from "react-icons/fa";
-import { Await, Link, useLoaderData } from "react-router-dom";
+import { Await, Link,} from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { useEffect, useState } from "react";
+import { getUserById } from "../util/getUserById";
 
 
 const UserInfo = () => {
-    const users = useLoaderData();
-    const { name } = useParams();
+    // const users = useLoaderData();
+    const { userId } = useParams();
+    const [user, setUser] = useState({ loading: true });
 
-    const user = users.find(user => user.email == name);
+    // const user = users.find(user => user.email == name);
+
+    useEffect(() => {
+        const getData = async () => {
+
+            const data = await getUserById(userId);
+            setUser(data);
+        }
+        getData();
+    }, [userId])
 
 
     return (
 
         <Await>
-            {user ? <section className="flex items-center justify-center w-full">
+            {!user.loading ? <section className="flex items-center justify-center w-full">
                 <div className="relative bg-[#151d28] rounded-xl flex flex-col gap-1 h-max p-20 items-center min-w-[700px] max-md:min-w-[90vw]">
                     <div className="text-purple-600 bg-purple-400/20 w-min p-6 rounded-xl mb-6 flex items-center gap-4 cursor-pointer text-[500%]">
                         <FaUser />

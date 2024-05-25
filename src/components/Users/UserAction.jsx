@@ -49,7 +49,7 @@ const UserAction = ({ account, onDeactive, onDelete }) => {
                 }}
             >
                 <MenuItem onClick={handleClose}>
-                    <Link to={`/main/users/${account.email}`}>
+                    <Link to={`/main/users/${account.userId}`}>
                         Профиль
                     </Link>
 
