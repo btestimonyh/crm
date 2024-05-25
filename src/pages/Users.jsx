@@ -10,6 +10,7 @@ import Modal from "../components/Modal/Modal";
 import RegisterForm from "../components/Login/RegisterForm";
 import { useSelector } from "react-redux";
 import { role } from "../store/store";
+import { Oval } from "react-loader-spinner";
 
 const UsersPage = () => {
     const fullData = useLoaderData();
@@ -78,7 +79,7 @@ const UsersPage = () => {
     const addHandler = () => {
         setIsLoading(true);
         setActiveData(fullData);
-        setTimeout(()=>{
+        setTimeout(() => {
             setIsLoading(false);
         }, 500)
     };
@@ -149,7 +150,15 @@ const UsersPage = () => {
                     ПОЛЬЗОВАТЕЛИ
                     <Button variant="contained" color="secondary" onClick={() => setAddingUser(true)}><span className="font-[700] max-sm:text-[12px]" >ДОБАВИТЬ ПОЛЬЗОВАТЕЛЯ</span></Button>
                 </div>
-                {isLoading ? <div> Loading ... </div> :
+                {isLoading ? <div className="w-full h-[60vh] flex items-center justify-center"> <Oval
+                    visible={true}
+                    height="180"
+                    width="180"
+                    color="#4fa94d"
+                    ariaLabel="oval-loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                /> </div> :
                     <Box className='px-6 w-full h-[60vh] max-sm:px-4 max-sm:gap-1' sx={{ overflowX: 'auto' }}>
 
                         <DataGrid
