@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import Select from 'react-select';
 import { DataGrid } from "@mui/x-data-grid";
@@ -14,7 +14,7 @@ import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import { GiReceiveMoney } from "react-icons/gi";
 import { PiUsersThreeFill } from "react-icons/pi";
 import { getProjectById } from "../util/getProjectById";
-import { TailSpin } from "react-loader-spinner";
+// import { TailSpin } from "react-loader-spinner";
 
 
 
@@ -48,31 +48,31 @@ const ProjectInfo = () => {
 
     useEffect(() => {
         const getData = async () => {
+            console.log(id);
             const data = await getProjectById(id);
-            console.log(data)
             setProject(data);
         }
         getData();
     }, [id])
 
-    if (!project) {
-        return (
-            <section className="bg-[#151d28] rounded-xl p-4 relative flex items-center justify-center text-2xl">
-                <TailSpin
-                    visible={true}
-                    height="80"
-                    width="80"
-                    color="gray"
-                    ariaLabel="tail-spin-loading"
-                    radius="1"
-                    wrapperStyle={{}}
-                    wrapperClass=""
-                />
-            </section>
-        );
-    }
+    // if (!project) {
+    //     return (
+    //         <section className="bg-[#151d28] rounded-xl p-4 relative flex items-center justify-center text-2xl">
+    //             <TailSpin
+    //                 visible={true}
+    //                 height="80"
+    //                 width="80"
+    //                 color="gray"
+    //                 ariaLabel="tail-spin-loading"
+    //                 radius="1"
+    //                 wrapperStyle={{}}
+    //                 wrapperClass=""
+    //             />
+    //         </section>
+    //     );
+    // }
 
-    if (!project.leads) {
+    if (!project.leads || project.leads.length == 0) {
         return (
             <section className="bg-[#151d28] rounded-xl p-4 relative flex items-center justify-center text-2xl">
                 В этом проекте нет лидов
