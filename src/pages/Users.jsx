@@ -11,6 +11,7 @@ import RegisterForm from "../components/Login/RegisterForm";
 import { useSelector } from "react-redux";
 import { role } from "../store/store";
 import { Oval } from "react-loader-spinner";
+import { getProjects } from "../util/getProjects";
 
 const UsersPage = () => {
     const fullData = useLoaderData();
@@ -19,6 +20,13 @@ const UsersPage = () => {
     const [activeStatus, setActiveStatus] = useState(false);
     const [addingUser, setAddingUser] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+
+    const getData = async () => {
+        const data = await getProjects();
+        setActiveData(data);
+    }
+
 
     const ROLE = useSelector(role);
     const navigate = useNavigate();
@@ -78,10 +86,10 @@ const UsersPage = () => {
 
     const addHandler = () => {
         setIsLoading(true);
-        setActiveData(fullData);
+        getData();
         setTimeout(() => {
             setIsLoading(false);
-        }, 500)
+        }, 1000)
     };
 
     const modifiedTable = usersTitle.map((el) => {
