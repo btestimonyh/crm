@@ -2,7 +2,7 @@ import { Await, useLoaderData, useNavigate } from "react-router-dom";
 import FilterUsers from "../components/Users/FilterUsers";
 import { usersTitle } from "../components/Users/userTitle";
 import { DataGrid } from '@mui/x-data-grid';
-import { Box, Button } from "@mui/material";
+import { Box, Button, getListSubheaderUtilityClass } from "@mui/material";
 import { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa";
 import UserAction from "../components/Users/UserAction";
@@ -11,7 +11,7 @@ import RegisterForm from "../components/Login/RegisterForm";
 import { useSelector } from "react-redux";
 import { role } from "../store/store";
 import { Oval } from "react-loader-spinner";
-import { getProjects } from "../util/getProjects";
+import { getUsers } from "../util/getUsers";
 
 const UsersPage = () => {
     const fullData = useLoaderData();
@@ -23,7 +23,7 @@ const UsersPage = () => {
 
 
     const getData = async () => {
-        const data = await getProjects();
+        const data = await getUsers();
         setActiveData(data);
     }
 
