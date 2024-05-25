@@ -10,17 +10,25 @@ import { useNavigate } from "react-router-dom";
 import FilterProjects from "../components/Projects/FilterProjects";
 import { useSelector } from "react-redux";
 import { role } from "../store/store";
+import { Oval } from "react-loader-spinner";
 
 const Projects = () => {
     const projects = useLoaderData();
     const [activeProjects, setActiveProjects] = useState([]);
     const [addingProject, setAddingProject] = useState(false);
     const ROLE = useSelector(role);
+    const [isLoading, setIsLoading] = useState(false);
     const ADMIN = ROLE === 'admin' || ROLE === 'owner';
     const navigate = useNavigate();
 
-    const addProject = (project) => {
-        setActiveProjects([...activeProjects, project]);
+    const addProject = () => {
+        setIsLoading(true);
+        setTimeout(() => {
+            setIsLoading(false);
+            //s
+            window.location.reload();
+        }, 1000)
+        // setActiveProjects([...activeProjects, project]);
     };
 
     const handleRowClick = (params) => {
@@ -44,7 +52,7 @@ const Projects = () => {
             setActiveProjects(projects);
         }
     }, [ROLE, projects, filterHandler]);
-   
+
 
 
     return <section>
@@ -58,6 +66,15 @@ const Projects = () => {
                 <div>ПРОЕКТЫ</div>
                 {ADMIN && <Button variant="contained" color="secondary" onClick={() => setAddingProject(true)}><span className="font-[700] max-sm:text-[12px]" >ДОБАВИТЬ ПРОЕКТ</span></Button>}
             </div>
+            {isLoading ? <div className="w-full h-[60vh] flex items-center justify-center"> <Oval
+                    visible={true}
+                    height="180"
+                    width="180"
+                    color="#4fa94d"
+                    ariaLabel="oval-loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                /> </div> :
             <Box className='px-6 w-full h-[60vh] max-sm:px-2 max-sm:gap-1'>
                 <DataGrid
                     sx={{
@@ -86,7 +103,7 @@ const Projects = () => {
                 // checkboxSelection
                 // disableRowSelectionOnClick
                 />
-            </Box>
+            </Box>}
             {addingProject &&
                 <Modal onClose={() => setAddingProject(false)} id='adding-project-form'>
                     <AddProjectForm onClose={() => setAddingProject(false)} projectsAmount={projects.length} onAdd={addProject} />
