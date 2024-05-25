@@ -36,6 +36,8 @@ const LoginForm = () => {
 
         const accountExisting = await loginCheck(loginValue,passwordValue);
         if(accountExisting){
+            localStorage.setItem('userLogin', loginValue);
+            localStorage.setItem('userPassword', passwordValue);
             localStorage.setItem('isLogged', true);
             localStorage.setItem('user-id', accountExisting);
             window.location.href = '/'

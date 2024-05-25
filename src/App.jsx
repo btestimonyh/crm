@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { setAdmin, setOwner } from "./store/store";
 import { useEffect } from "react";
 import { roleCheck } from "./util/roleCheck";
+import { loginCheck } from "./util/loginCheck";
 
 function App() {
   const isLogged = localStorage.getItem('isLogged');
@@ -28,16 +29,24 @@ function App() {
         dispatch(setAdmin());
       } else if (role == 'owner') {
         dispatch(setOwner());
-      }else if(role == 'buyer'){
+      } else if (role == 'buyer') {
         return;
       }
-      else{
+      else {
         localStorage.removeItem('isLogged');
-        localStorage.removeItem('user-id')
+        localStorage.removeItem('user-id');
       }
     }
     getRole();
   }, [dispatch]);
+
+  useEffect(() => {
+    const userLogin = localStorage.getItem('userLogin');
+    const userPassword = localStorage.getItem('userPassword');
+
+    loginCheck(userLogin,userPassword);
+
+  }, []);
 
 
   const router = createHashRouter([
