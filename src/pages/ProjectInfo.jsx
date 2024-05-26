@@ -123,11 +123,14 @@ const ProjectInfo = () => {
         }, 0);
 
 
+        const nameHeader = (!group || group == undefined || group == 'undefined' )? 'Отсутствует' : group;
+       
+        
         if (groupByField) {
             rows.push({
                 id: `${groupByField}-${group}`,
                 isGroupHeader: true,
-                groupName: `${group} (${items.length})`,
+                groupName: `${nameHeader} (${items.length})`,
                 isFtd: totalIsFtd,
                 ftdAmount: totalftdAmount,
                 rdCount: totalrdCount,
@@ -161,7 +164,7 @@ const ProjectInfo = () => {
             sortable: false,
             disableColumnMenu: true,
             // flex: 1,
-            minWidth: 150,
+            minWidth: 200,
             renderCell: (params) => params.row.isGroupHeader ? <div className="px-2">{params.value}</div> : null
         }] : []),
         ...filteredLeadTitle,
@@ -169,8 +172,10 @@ const ProjectInfo = () => {
 
     const uniqueFields = Object.keys(leads[0]);
     const options = uniqueFields.flatMap(field => {
-        const uniqueValues = getUniqueValues(leads, field);
-        return uniqueValues.length > 1 && (field !== 'id' && field !== 'firstName' && field !== 'lastName') ? [{ value: field, label: field }] : [];
+        // const uniqueValues = getUniqueValues(leads, field);
+        const label = field == 'isFtd' ? 'FTD' : field == 'rdCount' ? 'Кол-во RD' : field;
+        // return uniqueValues.length > 1 && (field !== 'id' && field !== 'firstName' && field !== 'lastName') ? [{ value: field, label: field }] : [];
+         return (field == 'sub1' || field == 'sub2' || field == 'sub3' || field == 'sub4' || field == 'sub5' || field == 'sub6' || field == 'sub7' || field == 'sub8' || field == 'isFtd' || field == 'rdCount') ? [{ value: field, label: label }] : [];
     });
 
     options.unshift({ value: '', label: 'Сбросить' });
@@ -185,10 +190,10 @@ const ProjectInfo = () => {
             {leads ? <div className="relative w-full bg-[#151d28] rounded-xl z-[0] pt-24 max-sm:pt-10">
                 <div className="w-full grid grid-cols-6 max-md:grid-cols-3 mt-10 px-4 gap-4 max-[1400px]:grid-cols-5 max-[1200px]:grid-cols-4">
                     <ProjecCircle title='Лиды' bg='bg-green-700/70' icon={<PiUsersThreeFill />}>{project.leads.length}</ProjecCircle>
-                    <ProjecCircle title='isFtd' bg='bg-red-600/70' icon={<GiReceiveMoney />}>{IsFtdAmount}</ProjecCircle>
-                    <ProjecCircle title='ftdAmount' bg='bg-blue-500/70' icon={<RiMoneyDollarCircleFill />}>{ftdAmount}</ProjecCircle>
-                    <ProjecCircle title='rdCount' bg='bg-red-400/70' icon={<GiReceiveMoney />}>{rdCountAmount}</ProjecCircle>
-                    <ProjecCircle title='rdAmount' bg='bg-blue-800/70' icon={<RiMoneyDollarCircleFill />}>{rdAmount}</ProjecCircle>
+                    <ProjecCircle title='FTD' bg='bg-red-600/70' icon={<GiReceiveMoney />}>{IsFtdAmount}</ProjecCircle>
+                    <ProjecCircle title='Сумма FTD' bg='bg-blue-500/70' icon={<RiMoneyDollarCircleFill />}>{ftdAmount}</ProjecCircle>
+                    <ProjecCircle title='Кол-во RD' bg='bg-red-400/70' icon={<GiReceiveMoney />}>{rdCountAmount}</ProjecCircle>
+                    <ProjecCircle title='Сумма RD' bg='bg-blue-800/70' icon={<RiMoneyDollarCircleFill />}>{rdAmount}</ProjecCircle>
                 </div>
 
                 <div className="flex gap-6 max-md:flex-col-reverse max-md:items-start max-md:px-2 max-md:gap-1">

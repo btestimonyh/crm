@@ -20,13 +20,13 @@ export const leadsTitle = [
     },
     {
         field: 'username',
-        headerName: 'USER',
+        headerName: 'Username',
         minWidth: 150,
         disableColumnMenu: true,
     },
     {
         field: 'tgid',
-        headerName: 'TG',
+        headerName: 'TID',
         minWidth: 150,
         disableColumnMenu: true,
     },
@@ -38,34 +38,86 @@ export const leadsTitle = [
     },
     {
         field: 'isFtd',
-        headerName: 'isFTd',
-        minWidth: 100,
+        headerName: 'FTD',
+        minWidth: 50,
         disableColumnMenu: true,
+        renderCell: (params) => (
+            (!params.value || params.value == 'false') ? 'Нет' : 'Да'
+        )
     },
     {
         field: 'ftdAmount',
-        headerName: 'ftdAmount',
+        headerName: 'Сумма FTD',
         minWidth: 100,
         disableColumnMenu: true,
     },
     {
         field: 'rdCount',
-        headerName: 'rdCount',
+        headerName: 'Кол-во RD',
         minWidth: 100,
         disableColumnMenu: true,
     },
     {
         field: 'rdAmount',
-        headerName: 'rdAmount',
+        headerName: 'Сумма RD',
         minWidth: 100,
         disableColumnMenu: true,
     },
     {
         field: 'fbStatus',
-        headerName: 'fbStatus',
+        headerName: 'Статус FB',
         minWidth: 100,
         disableColumnMenu: true,
     },
+    {
+        field: 'sub1',
+        headerName: 'sub1',
+        minWidth: 120,
+        disableColumnMenu: true,
+    },
+    {
+        field: 'sub2',
+        headerName: 'sub2',
+        minWidth: 120,
+        disableColumnMenu: true,
+    },
+    {
+        field: 'sub3',
+        headerName: 'sub3',
+        minWidth: 120,
+        disableColumnMenu: true,
+    },
+    {
+        field: 'sub4',
+        headerName: 'sub4',
+        minWidth: 120,
+        disableColumnMenu: true,
+    },
+    {
+        field: 'sub5',
+        headerName: 'sub5',
+        minWidth: 120,
+        disableColumnMenu: true,
+    },
+    {
+        field: 'sub6',
+        headerName: 'sub6',
+        minWidth: 120,
+        disableColumnMenu: true,
+    },
+    {
+        field: 'sub7',
+        headerName: 'sub7',
+        minWidth: 120,
+        disableColumnMenu: true,
+    },
+    {
+        field: 'sub8',
+        headerName: 'sub8',
+        minWidth: 120,
+        disableColumnMenu: true,
+    },
+    
 ];
 
                     // "firstName": "LeadUserFirstName",
