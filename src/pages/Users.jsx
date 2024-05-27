@@ -169,7 +169,7 @@ const UsersPage = () => {
                             sx={{
                                 color: 'white',
                                 border: 'none',
-                                width: 850,
+                                // width: 850,
                                 '@media (max-width: 600px)': { // Тут ви вказуєте медіа-запит для мобільних пристроїв (менше 600px)
                                     fontSize: '12px',
                                     // marginRight: '-20px' // Встановлюємо розмір шрифту для мобільних пристроїв

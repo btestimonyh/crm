@@ -58,7 +58,7 @@ export const usersTitle = [
         // flex: 1,
         // minWidth: 150,
         disableColumnMenu: true,
-        width: 150,
+        minWidth: 150,
     }
 
 ];

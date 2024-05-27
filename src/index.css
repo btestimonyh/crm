@@ -86,3 +86,8 @@ section {
 .group-header {
   background-color: #152435;
 }
+
+.MuiPickersArrowSwitcher-button,.MuiDateRangePickerDay-dayOutsideRangeInterval,.MuiDateRangePickerDay-day,.MuiDayCalendar-weekDayLabel{
+  color: white!important;
+} 
+
