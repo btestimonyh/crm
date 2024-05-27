@@ -10,7 +10,7 @@ import { getUsers } from "../../util/getUsers";
 const AddProjectForm = ({ onClose, projectsAmount, onAdd }) => {
     const [options, setOptions] = useState([]);
     const nameInput = useRef(null);
-    const pixelInput = useRef(null);
+    // const pixelInput = useRef(null);
 
     useEffect(() => {
         const getData = async () => {
@@ -33,7 +33,7 @@ const AddProjectForm = ({ onClose, projectsAmount, onAdd }) => {
 
     const submitHandler = (e) => {
         const nameValue = nameInput.current.value;
-        const pixelValue = pixelInput.current.value;
+        // const pixelValue = pixelInput.current.value;
         e.preventDefault();
         if (nameValue.length < 1) {
             return setNameError(true);
@@ -46,7 +46,7 @@ const AddProjectForm = ({ onClose, projectsAmount, onAdd }) => {
             rd: 0,
             leads: [],
             buyerId: buyer.value,
-            pixelId: pixelValue,
+            // pixelId: pixelValue,
         }
 
         addNewProject(data);
@@ -69,7 +69,7 @@ const AddProjectForm = ({ onClose, projectsAmount, onAdd }) => {
         {/* <p className="text-sm text-gray-500">Пожалуйста, введите свои данные</p> */}
 
         <LoginInput placeholder="Название проекта" ref={nameInput} error={nameError} />
-        <LoginInput placeholder='Pixel ID' className='my-2' ref={pixelInput} />
+        {/* <LoginInput placeholder='Pixel ID' className='my-2' ref={pixelInput} /> */}
         <div className="text-gray-500 mt-2 text-sm">Отвественный байер</div>
         <Select
             defaultValue={options[0]}
