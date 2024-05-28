@@ -26,13 +26,13 @@ export const statsTitle = [
     {
         field: "subsFtd",
         headerName: "Подп./FTD",
-        minWidth: 120,
+        minWidth: 170,
         disableColumnMenu: true,
     },
     {
         field: "ftdRd",
         headerName: "FTD/RD",
-        minWidth: 120,
+        minWidth: 150,
         disableColumnMenu: true,
     },
 

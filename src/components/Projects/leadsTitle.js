@@ -50,6 +50,7 @@ export const leadsTitle = [
         headerName: 'Сумма FTD',
         minWidth: 100,
         disableColumnMenu: true,
+        renderCell: (params) => `${params.value ? params.value : 0} $`  
     },
     {
         field: 'rdCount',
@@ -62,6 +63,7 @@ export const leadsTitle = [
         headerName: 'Сумма RD',
         minWidth: 100,
         disableColumnMenu: true,
+        renderCell: (params) => `${params.value ? params.value : 0} $`  
     },
     {
         field: 'fbStatus',
