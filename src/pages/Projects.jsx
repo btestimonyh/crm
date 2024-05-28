@@ -25,7 +25,6 @@ const Projects = () => {
         setIsLoading(true);
         setTimeout(() => {
             setIsLoading(false);
-            //s
             window.location.reload();
         }, 1000)
         // setActiveProjects([...activeProjects, project]);

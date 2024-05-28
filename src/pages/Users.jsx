@@ -82,7 +82,6 @@ const UsersPage = () => {
         setIsLoading(true);
         setTimeout(() => {
             setIsLoading(false);
-            //s
             window.location.reload();
         }, 1000)
     };
