@@ -15,6 +15,7 @@ import { statsTitle } from "../components/Projects/statsTitle";
 import dayjs from "dayjs";
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import { TailSpin } from "react-loader-spinner";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -38,18 +39,29 @@ const ProjectInfo = () => {
     const [groupByField, setGroupByField] = useState("");
     const [adminTable,setAdminTable] = useState(false);
     // const [isSorted,setIsSorted] = useState(false);
+    const [isLoading,setIsLoading] = useState(true)
 
     const ROLE = useSelector(role);
     const ADMIN = (ROLE == 'owner' || ROLE == 'admin') ;
 
+    
     useEffect(() => {
         const getData = async () => {
             const data = await getProjectById(id);
             setProject(data);
             setActiveLeads(data.leads);
         }
+        setTimeout(()=> setIsLoading(false), 1000)
         getData();
     }, [id]);
+
+  
+    const updateData = async () =>{
+        console.log('test')
+        const data = await getProjectById(id);
+        setTimeout(()=> setIsLoading(false), 1000)
+        setProject(data);
+    }
 
 
     if (!project.leads || project.leads.length == 0) {
@@ -119,9 +131,9 @@ const ProjectInfo = () => {
                         groupName: `${nameHeader} (${items.length})`,
                         leads:items.length,
                         inactive: items.filter(el => el.subStatus == 'INACTIVE').length,
-                        ftd: totalftdAmount,
-                        rd: totalrdAmount,
-                        subsFtd: `${project.subs} / ${totalftdAmount} (${project.subs > 0 && totalftdAmount > 0 ? (project.subs/totalftdAmount).toFixed(2) : 0}%)`,
+                        ftd: totalftdAmount + ' $',
+                        rd: totalrdAmount + ' $',
+                        subsFtd: `${project.subs} / ${totalftdAmount} (${project.subs > 0 && totalftdAmount > 0 ? (project.subs/totalftdAmount*100).toFixed(2) : 0}%)`,
                         // ftdRd: rdAmount > 0 ? (ftdAmount/rdAmount).toFixed(2) : 0,
                         ftdRd: `${totalftdAmount}/${totalrdAmount} (${totalftdAmount > 0 && totalrdAmount > 0 ? (totalftdAmount/totalrdAmount*100).toFixed(2) : 0}%)`,
                         // name: project.name
@@ -153,10 +165,10 @@ const ProjectInfo = () => {
                     subs: project.subs,
                     leads: leads.length,
                     inactive: leads.filter(el => el.subStatus == 'INACTIVE').length,
-                    ftd: ftdAmount,
-                    rd: rdAmount,
+                    ftd: ftdAmount + " $",
+                    rd: rdAmount + " $",
                     // subsFtd: ftdAmount > 0 ? project.subs/ftdAmount : 0,
-                    subsFtd: `${project.subs} / ${ftdAmount} (${project.subs > 0 && ftdAmount > 0 ? (project.subs/ftdAmount).toFixed(2) : 0}%)`,
+                    subsFtd: `${project.subs} / ${ftdAmount} (${project.subs > 0 && ftdAmount > 0 ? (project.subs/ftdAmount*100).toFixed(2) : 0}%)`,
                     // ftdRd: rdAmount > 0 ? (ftdAmount/rdAmount).toFixed(2) : 0,
                     ftdRd: `${ftdAmount}/${rdAmount} (${ftdAmount > 0 && rdAmount > 0 ? (ftdAmount/rdAmount*100).toFixed(2) : 0}%)`,
                 }]
@@ -230,6 +242,8 @@ const ProjectInfo = () => {
 
    
     const sortingStats = (time) =>{
+        updateData();
+        setIsLoading(true);
         if(time == 'all'){
             return setActiveLeads(project.leads)
         }else if(time.length == 7){
@@ -246,7 +260,8 @@ const ProjectInfo = () => {
         }
        
         const filteredList = project.leads.filter(el => el.regDate == time);
-        setActiveLeads(filteredList)
+        setActiveLeads(filteredList);
+        
     }
 
     return (
@@ -275,7 +290,16 @@ const ProjectInfo = () => {
 
                 
                 
-                {
+                {isLoading ? <div className="w-full h-[60vh] flex items-center justify-center"> <TailSpin
+                    visible={true}
+                    height="80"
+                    width="80"
+                    color="gray"
+                    ariaLabel="tail-spin-loading"
+                    radius="1"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                /> </div> :  (
                     !adminTable ? 
                     // STATS TABLE
                     <Box className="px-6 w-full h-[65vh] max-sm:px-4 max-sm:gap-1">
@@ -364,7 +388,8 @@ const ProjectInfo = () => {
                 </Box>
 
 
-                }
+                )}
+               
                 
 
                 <div className="absolute top-4 right-4 max-md:right-0">
