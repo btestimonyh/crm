@@ -121,8 +121,9 @@ const ProjectInfo = () => {
                         inactive: items.filter(el => el.subStatus == 'INACTIVE').length,
                         ftd: totalftdAmount,
                         rd: totalrdAmount,
-                        subsFtd: totalftdAmount > 0 ? (project.subs/totalftdAmount).toFixed(2) : 0.00,
-                        ftdRd: totalrdAmount > 0 ? (totalftdAmount/totalrdAmount).toFixed(2) : 0.00,
+                        subsFtd: `${project.subs} / ${totalftdAmount} (${project.subs > 0 && totalftdAmount > 0 ? (project.subs/totalftdAmount).toFixed(2) : 0}%)`,
+                        // ftdRd: rdAmount > 0 ? (ftdAmount/rdAmount).toFixed(2) : 0,
+                        ftdRd: `${totalftdAmount}/${totalrdAmount} (${totalftdAmount > 0 && totalrdAmount > 0 ? (totalftdAmount/totalrdAmount*100).toFixed(2) : 0}%)`,
                         // name: project.name
                     })
                 }
@@ -154,8 +155,10 @@ const ProjectInfo = () => {
                     inactive: leads.filter(el => el.subStatus == 'INACTIVE').length,
                     ftd: ftdAmount,
                     rd: rdAmount,
-                    subsFtd: ftdAmount > 0 ? project.subs/ftdAmount : 0,
-                    ftdRd: rdAmount > 0 ? (ftdAmount/rdAmount).toFixed(2) : 0,
+                    // subsFtd: ftdAmount > 0 ? project.subs/ftdAmount : 0,
+                    subsFtd: `${project.subs} / ${ftdAmount} (${project.subs > 0 && ftdAmount > 0 ? (project.subs/ftdAmount).toFixed(2) : 0}%)`,
+                    // ftdRd: rdAmount > 0 ? (ftdAmount/rdAmount).toFixed(2) : 0,
+                    ftdRd: `${ftdAmount}/${rdAmount} (${ftdAmount > 0 && rdAmount > 0 ? (ftdAmount/rdAmount*100).toFixed(2) : 0}%)`,
                 }]
             }
 
