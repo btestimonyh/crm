@@ -14,12 +14,24 @@ export const statsTitle = [
     {
         field: "ftd",
         headerName: "FTD",
+        minWidth: 100,
+        disableColumnMenu: true,
+    },
+    {
+        field: "ftdAmount",
+        headerName: "Сумма FTD",
         minWidth: 120,
         disableColumnMenu: true,
     },
     {
         field: "rd",
         headerName: "RD",
+        minWidth: 100,
+        disableColumnMenu: true,
+    },
+    {
+        field: "rdAmount",
+        headerName: "Сумма RD",
         minWidth: 120,
         disableColumnMenu: true,
     },

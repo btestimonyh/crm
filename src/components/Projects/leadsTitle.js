@@ -12,12 +12,12 @@ export const leadsTitle = [
         minWidth: 150,
         disableColumnMenu: true,
     },
-    {
-        field: 'lastName',
-        headerName: 'ФАМИЛИЯ',
-        minWidth: 150,
-        disableColumnMenu: true,
-    },
+    // {
+    //     field: 'lastName',
+    //     headerName: 'ФАМИЛИЯ',
+    //     minWidth: 150,
+    //     disableColumnMenu: true,
+    // },
     {
         field: 'username',
         headerName: 'Username',
