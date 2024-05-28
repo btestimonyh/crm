@@ -57,7 +57,6 @@ const ProjectInfo = () => {
 
   
     const updateData = async () =>{
-        console.log('test')
         const data = await getProjectById(id);
         setTimeout(()=> setIsLoading(false), 1000)
         setProject(data);
