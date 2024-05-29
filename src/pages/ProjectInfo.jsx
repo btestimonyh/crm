@@ -94,7 +94,7 @@ const ProjectInfo = () => {
     for (const [group, items] of Object.entries(groupedLeads)) {
         
             const totalIsFtd = items.reduce((total, lead) => {
-                if (lead.isFtd == "true") {
+                if (lead.isFtd == "true" || lead.isFtd == true) {
                     return total + 1;
                 }
                 return total;
@@ -130,11 +130,13 @@ const ProjectInfo = () => {
                         groupName: `${nameHeader} (${items.length})`,
                         leads:items.length,
                         inactive: items.filter(el => el.subStatus == 'INACTIVE').length,
-                        ftd: totalftdAmount + ' $',
-                        rd: totalrdAmount + ' $',
-                        subsFtd: `${project.subs} / ${totalftdAmount} (${project.subs > 0 && totalftdAmount > 0 ? (project.subs/totalftdAmount*100).toFixed(2) : 0}%)`,
+                        ftdAmount: totalftdAmount + ' $',
+                        ftd: totalIsFtd,
+                        rd: totalrdCount,
+                        rdAmount: totalrdAmount + ' $',
+                        subsFtd: `${project.subs} / ${totalIsFtd} (${project.subs > 0 && totalIsFtd > 0 ? ((totalIsFtd*100)/project.subs).toFixed(2) : 0}%)`,
                         // ftdRd: rdAmount > 0 ? (ftdAmount/rdAmount).toFixed(2) : 0,
-                        ftdRd: `${totalftdAmount}/${totalrdAmount} (${totalftdAmount > 0 && totalrdAmount > 0 ? (totalftdAmount/totalrdAmount*100).toFixed(2) : 0}%)`,
+                        ftdRd: `${totalIsFtd}/${totalrdCount} (${totalIsFtd> 0 && totalrdCount > 0 ? ((totalIsFtd*100)/totalrdCount).toFixed(2) : 0}%)`,
                         // name: project.name
                     })
                 }
@@ -156,6 +158,15 @@ const ProjectInfo = () => {
             const ftdAmount = activeLeads.reduce((total, lead) => {
                 return lead.ftdAmount ? total + parseInt(lead.ftdAmount) : total + 0;
             }, 0);
+            const ftdCount = activeLeads.reduce((total, lead) => {
+                if (lead.isFtd == "true" || lead.isFtd == true) {
+                    return total + 1;
+                }
+                return total;
+            }, 0);
+            const rdCount = activeLeads.reduce((total, lead) => {
+                return lead.rdCount ? total + parseInt(lead.rdCount) : total + 0;
+            }, 0);
             
             if(!groupByField && activeLeads.length > 0){
                 rowsStats = [{
@@ -164,12 +175,14 @@ const ProjectInfo = () => {
                     subs: project.subs,
                     leads: leads.length,
                     inactive: leads.filter(el => el.subStatus == 'INACTIVE').length,
-                    ftd: ftdAmount + " $",
-                    rd: rdAmount + " $",
+                    ftd: ftdCount,
+                    ftdAmount: ftdAmount + " $",
+                    rd: rdCount,
+                    rdAmount: rdAmount + " $",
                     // subsFtd: ftdAmount > 0 ? project.subs/ftdAmount : 0,
-                    subsFtd: `${project.subs} / ${ftdAmount} (${project.subs > 0 && ftdAmount > 0 ? (project.subs/ftdAmount*100).toFixed(2) : 0}%)`,
+                    subsFtd: `${project.subs} / ${ftdCount} (${project.subs > 0 && ftdAmount > 0 ? ((ftdCount*100)/(project.subs)).toFixed(2) : 0}%)`,
                     // ftdRd: rdAmount > 0 ? (ftdAmount/rdAmount).toFixed(2) : 0,
-                    ftdRd: `${ftdAmount}/${rdAmount} (${ftdAmount > 0 && rdAmount > 0 ? (ftdAmount/rdAmount*100).toFixed(2) : 0}%)`,
+                    ftdRd: `${ftdCount}/${rdCount} (${ftdCount > 0 && rdCount > 0 ? ((ftdCount * 100)/rdCount).toFixed(2) : 0}%)`,
                 }]
             }
 
