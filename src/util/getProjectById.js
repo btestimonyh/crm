@@ -20,7 +20,7 @@ export const getProjectById = async (id,timeZone) => {
                 "isFtd": "true",
                 "rdCount": "5",
                 "rdAmount": '50',
-                "regDate": '27.04.2024',
+                "regDate": '31.05.2024',
                 "fbStatus": "good",
                 "sub1": "value1",
                 "sub2": "value2",
