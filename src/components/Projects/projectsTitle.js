@@ -1,11 +1,5 @@
 export const projectsTitle = [
     {
-        field: 'id',
-        headerName: 'ID',
-        // flex:1,
-        disableColumnMenu: true,
-    },
-    {
         field: 'name',
         headerName: 'ПРОЕКТ',
         disableColumnMenu: true,
@@ -14,30 +8,51 @@ export const projectsTitle = [
         // maxWidth: 38,
     },
     {
-        field: 'subs',
-        headerName: 'ПОДПИСЧИКИ',
-        // width: 200,
-        // flex: 1,
-        minWidth: 200,
-        disableColumnMenu: true
-        // editable: true,
+        field: "leads",
+        headerName: "Подписки",
+        minWidth: 120,
+        disableColumnMenu: true,
     },
     {
-        field: 'ftd',
-        headerName: 'FTD',
-        // width: 200,
-        // flex: 1,
-        minWidth: 200,
-        disableColumnMenu: true
-        // editable: true,
+        field: "inactive",
+        headerName: "Отписки",
+        minWidth: 120,
+        disableColumnMenu: true,
     },
     {
-        field: 'rd',
-        headerName: 'RD',
-        // width: 150,
-        // flex: 1,
-        minWidth: 200,
-        disableColumnMenu: true
-        // editable: true,
+        field: "ftd",
+        headerName: "FTD",
+        minWidth: 100,
+        disableColumnMenu: true,
+    },
+    // {
+    //     field: "ftdAmount",
+    //     headerName: "Сумма FTD",
+    //     minWidth: 120,
+    //     disableColumnMenu: true,
+    // },
+    {
+        field: "rd",
+        headerName: "RD",
+        minWidth: 100,
+        disableColumnMenu: true,
+    },
+    // {
+    //     field: "rdAmount",
+    //     headerName: "Сумма RD",
+    //     minWidth: 120,
+    //     disableColumnMenu: true,
+    // },
+    {
+        field: "subsFtd",
+        headerName: "Подп./FTD",
+        minWidth: 170,
+        disableColumnMenu: true,
+    },
+    {
+        field: "ftdRd",
+        headerName: "FTD/RD",
+        minWidth: 150,
+        disableColumnMenu: true,
     },
 ];

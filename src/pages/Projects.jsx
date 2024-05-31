@@ -54,6 +54,31 @@ const Projects = () => {
         setIsLoading(false);
     }, [ROLE, projects, filterHandler]);
 
+    const rows = activeProjects.map(el => {
+        
+        const totalIsFtd = el.leads && el.leads.length > 1 ? el.leads.reduce((total, lead) => {
+            if (lead.isFtd == "true" || lead.isFtd == true) {
+                return total + 1;
+            }
+            return total;
+        }, 0) : 0;
+        const totalrdCount =  el.leads && el.leads.length > 1 ? el.leads.reduce((total, lead) => {
+            return lead.rdCount ? total + parseInt(lead.rdCount) : total + 0;
+        }, 0) : 0;
+    
+
+        return {
+            id: el.id,
+            name: el.name,
+            leads: el.leads && el.leads.length > 1 ? el.leads.length : 0,
+            inactive: el.leads && el.leads.length > 1 ? el.leads.filter(el => el.status == 'INACTIVE').length : 0,
+            ftd: totalIsFtd,
+            rd: totalrdCount,
+            subsFtd: `${(el.leads && el.leads.length > 1) ? el.leads.length : 0} / ${totalIsFtd} (${(el.leads && el.leads.length > 1) && totalIsFtd > 0 ? ((totalIsFtd*100)/el.leads.length).toFixed(2) : 0}%)`,
+            ftdRd: `${totalIsFtd}/${totalrdCount} (${totalIsFtd> 0 && totalrdCount > 0 ? ((totalIsFtd*100)/totalrdCount).toFixed(2) : 0}%)`,
+        }
+    })
+
     return <section>
         {ADMIN && <div className="w-full bg-[#151d28] rounded-xl flex">
             <FilterProjects filterProjects={filterHandler} />
@@ -89,7 +114,7 @@ const Projects = () => {
                             localeText={{
                                 noRowsLabel: '',
                             }}
-                            rows={activeProjects}
+                            rows={rows}
                             columns={projectsTitle}
                             initialState={{
                                 pagination: {

@@ -36,10 +36,11 @@ const ProjectInfo = () => {
     const [showRows, setShowRows] = useState([]);
     const [project, setProject] = useState({ leads: false });
     const [activeLeads, setActiveLeads] = useState();
-    const [groupByField, setGroupByField] = useState("");
+    const [groupByField, setGroupByField] = useState("sub1");
     const [adminTable,setAdminTable] = useState(false);
     // const [isSorted,setIsSorted] = useState(false);
-    const [isLoading,setIsLoading] = useState(true)
+    const [isLoading,setIsLoading] = useState(true);
+    const [timeZone,setTimeZone] = useState(0);
 
     const ROLE = useSelector(role);
     const ADMIN = (ROLE == 'owner' || ROLE == 'admin') ;
@@ -47,17 +48,17 @@ const ProjectInfo = () => {
     
     useEffect(() => {
         const getData = async () => {
-            const data = await getProjectById(id);
+            const data = await getProjectById(id,timeZone);
             setProject(data);
             setActiveLeads(data.leads);
         }
         setTimeout(()=> setIsLoading(false), 1000)
         getData();
-    }, [id]);
+    }, [id,timeZone]);
 
   
     const updateData = async () =>{
-        const data = await getProjectById(id);
+        const data = await getProjectById(id,timeZone);
         setTimeout(()=> setIsLoading(false), 1000)
         setProject(data);
     }
@@ -127,14 +128,14 @@ const ProjectInfo = () => {
                     rowsStats.push({
                         id: `${groupByField}-${group}`,
                         isGroupHeader: true,
-                        groupName: `${nameHeader} (${items.length})`,
+                        groupName: `${nameHeader}`,
                         leads:items.length,
                         inactive: items.filter(el => el.subStatus == 'INACTIVE').length,
                         ftdAmount: totalftdAmount + ' $',
                         ftd: totalIsFtd,
                         rd: totalrdCount,
                         rdAmount: totalrdAmount + ' $',
-                        subsFtd: `${project.subs} / ${totalIsFtd} (${project.subs > 0 && totalIsFtd > 0 ? ((totalIsFtd*100)/project.subs).toFixed(2) : 0}%)`,
+                        subsFtd: `${items.length} / ${totalIsFtd} (${items.length > 0 && totalIsFtd > 0 ? ((totalIsFtd*100)/items.length).toFixed(2) : 0}%)`,
                         // ftdRd: rdAmount > 0 ? (ftdAmount/rdAmount).toFixed(2) : 0,
                         ftdRd: `${totalIsFtd}/${totalrdCount} (${totalIsFtd> 0 && totalrdCount > 0 ? ((totalIsFtd*100)/totalrdCount).toFixed(2) : 0}%)`,
                         // name: project.name
@@ -180,7 +181,7 @@ const ProjectInfo = () => {
                     rd: rdCount,
                     rdAmount: rdAmount + " $",
                     // subsFtd: ftdAmount > 0 ? project.subs/ftdAmount : 0,
-                    subsFtd: `${project.subs} / ${ftdCount} (${project.subs > 0 && ftdAmount > 0 ? ((ftdCount*100)/(project.subs)).toFixed(2) : 0}%)`,
+                    subsFtd: `${leads.length} / ${ftdCount} (${leads.length > 0 && ftdAmount > 0 ? ((ftdCount*100)/(leads.length)).toFixed(2) : 0}%)`,
                     // ftdRd: rdAmount > 0 ? (ftdAmount/rdAmount).toFixed(2) : 0,
                     ftdRd: `${ftdCount}/${rdCount} (${ftdCount > 0 && rdCount > 0 ? ((ftdCount * 100)/rdCount).toFixed(2) : 0}%)`,
                 }]
@@ -197,7 +198,7 @@ const ProjectInfo = () => {
 
 
     
-        const headerNameGroup = groupByField == 'regDate' ? 'Дата' : groupByField == 'isFtd' ? 'FTD' : groupByField == 'rdCount' ? "Кол-во RD" : groupByField
+        const headerNameGroup = groupByField == 'regDate' ? 'Дата' : groupByField == 'isFtd' ? 'FTD' : groupByField == 'rdCount' ? "Кол-во RD" : groupByField == 'sub1' ? 'link' : groupByField;
     
         const columnsLeads = [
         ...(groupByField ? [{
@@ -226,19 +227,20 @@ const ProjectInfo = () => {
             minWidth: 220,
             disableColumnMenu: true,
         },
-        {
-            field: "subs",
-            headerName: "Подписчики",
-            minWidth: 120,
-            disableColumnMenu: true,
-        },]),
+        ]),
         ...statsTitle,
     ];
+    // {
+    //     field: "subs",
+    //     headerName: "Подписчики",
+    //     minWidth: 120,
+    //     disableColumnMenu: true,
+    // },
 
     const uniqueFields = Object.keys(project.leads[0]);
     const options = uniqueFields.flatMap(field => {
         // const uniqueValues = getUniqueValues(leads, field);
-        const label = field == 'isFtd' ? 'FTD' : field == 'rdCount' ? 'Кол-во RD' : field;
+        const label = field == 'isFtd' ? 'FTD' : field == 'rdCount' ? 'Кол-во RD' : field == 'sub1' ? 'link' : field;
         // return uniqueValues.length > 1 && (field !== 'id' && field !== 'firstName' && field !== 'lastName') ? [{ value: field, label: field }] : [];
         return (field == 'sub1' || field == 'sub2' || field == 'sub3' || field == 'sub4' || field == 'sub5' || field == 'sub6' || field == 'sub7' || field == 'sub8' || field == 'isFtd' || field == 'rdCount') ? [{ value: field, label: label }] : [];
     });
@@ -276,10 +278,15 @@ const ProjectInfo = () => {
         
     }
 
+    const timeZoneHandler = (time) =>{
+        setIsLoading(true);
+        setTimeZone(time);
+    }
+
     return (
         <section className="mb-10">
             {leads ? <div className="relative w-full bg-[#151d28] rounded-xl z-[0] pt-24 max-sm:pt-22">
-                <SortByDate sortingStats={sortingStats}/>
+                <SortByDate sortingStats={sortingStats} sortingTimeZone={timeZoneHandler}/>
                 <div className="flex gap-6 max-md:flex-col-reverse max-md:items-start max-md:px-2 max-md:gap-1 w-full">
                     <div>
                         <div className='text-gray-500 text-sm mt-4 pl-2 ml-8 mb-2'>
@@ -290,7 +297,7 @@ const ProjectInfo = () => {
                             styles={customStyles}
                             options={options}
                             className='w-[500px] max-xl:w-[300px] max-lg:w-[260px] max-md:w-[90vw] ml-8 mb-8 max-md:ml-1'
-                            placeholder=''
+                            placeholder='link'
                         />
                     </div>
                     <CopyPixel text={project.pixelId} />
