@@ -1,7 +1,7 @@
-export const getProjects = async () => {
+export const getProjects = async (timeZone = 0) => {
     // повертає всі проекти
     const token = localStorage.getItem('token');
-    
+
     const PROJECTS_FOR_TEST = [
         {
             id: 1,
@@ -10,7 +10,7 @@ export const getProjects = async () => {
             ftd: 10,
             rd: 10,
             buyerId: 'id1',
-            pixelId:'123',
+            pixelId: '123',
             leads: [
                 {
                     "firstName": "Lead1",
@@ -26,6 +26,7 @@ export const getProjects = async () => {
                     "fbStatus": "good",
                     "sub1": "value1",
                     "sub2": "value2",
+                    "regDate": '31.05.2024',
                     "sub3": "valuedsadsdasdasd3",
                     "sub4": "value4",
                     "sub5": "value5",
@@ -44,6 +45,7 @@ export const getProjects = async () => {
                     "status": "active",
                     "isFtd": "false",
                     "rdCount": "5",
+                    "regDate": '27.05.2024',
                     "fbStatus": "good",
                     "sub1": "value1",
                     "sub2": "value2",
@@ -66,6 +68,7 @@ export const getProjects = async () => {
                     "isFtd": "false",
                     // "rdCount": "5",
                     "fbStatus": "good",
+                    "regDate": '04.06.2024',
                     "sub1": "value2",
                     "sub2": "value2",
                     "sub3": "value3",
@@ -83,6 +86,7 @@ export const getProjects = async () => {
                     "username": "johndoe",
                     "tgid": "tg12345",
                     "subid": "sub12345",
+                    "regDate": '02.06.2024',
                     "status": "active",
                     "isFtd": "true",
                     // "rdCount": "5",
@@ -243,7 +247,7 @@ export const getProjects = async () => {
                     "sub7": "value7",
                     "sub8": "value8",
                     // "projectId": "2cf7bc88-1098-4bf8-af92-420c75032c0f"
-                },  {
+                }, {
                     "firstName": "Lead7",
                     "lastName": "LeadLastName",
                     "phone": "123-456-7890",

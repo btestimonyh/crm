@@ -54,11 +54,11 @@ const ProjectInfo = () => {
         }
         setTimeout(()=> setIsLoading(false), 1000)
         getData();
-    }, [id,timeZone]);
+    }, [id]);
 
   
-    const updateData = async () =>{
-        const data = await getProjectById(id,timeZone);
+    const updateData = async (zone = timeZone) =>{
+        const data = await getProjectById(id,zone);
         setTimeout(()=> setIsLoading(false), 1000)
         setProject(data);
     }
@@ -129,7 +129,7 @@ const ProjectInfo = () => {
                         id: `${groupByField}-${group}`,
                         isGroupHeader: true,
                         groupName: `${nameHeader}`,
-                        leads:items.length,
+                        leads: items.length,
                         inactive: items.filter(el => el.subStatus == 'INACTIVE').length,
                         ftdAmount: totalftdAmount + ' $',
                         ftd: totalIsFtd,
@@ -174,7 +174,7 @@ const ProjectInfo = () => {
                     id: project.id,
                     name: project.name,
                     subs: project.subs,
-                    leads: leads.length,
+                    leads: leads ? leads.length : 0,
                     inactive: leads.filter(el => el.subStatus == 'INACTIVE').length,
                     ftd: ftdCount,
                     ftdAmount: ftdAmount + " $",
@@ -281,6 +281,7 @@ const ProjectInfo = () => {
     const timeZoneHandler = (time) =>{
         setIsLoading(true);
         setTimeZone(time);
+        updateData(time);
     }
 
     return (
