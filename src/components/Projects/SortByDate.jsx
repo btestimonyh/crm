@@ -78,7 +78,7 @@ const SortByDate = ({ sortingStats, sortingTimeZone }) => {
 
                 {isOpen && <div className="absolute max-sm:top-0 max-sm:flex-col max-sm:h-screen max-sm:fixed max-sm:w-full max-lg:left-[-100px] max-sm:left-0 flex gap-2 left-0 bg-[#121921] border-gray-500 z-10 rounded-xl flex max-sm:pt-2  items-center justify-center max-sm:justify-start shadow-xl" onClick={(e) => e.stopPropagation()}>
                     <div className="absolute top-4 right-4 text-[30px] sm:hidden" onClick={() => setIsOpen(false)}><IoMdClose /></div>
-                    <div className="flex max-sm:flex-col gap-2 max-h-[80vh] overflow-auto">
+                    <div className="flex max-sm:flex-col gap-2 max-h-[90vh] overflow-auto">
                         <div className="text-center border-r-2 px-4 flex flex-col gap-2 w-max self-start max-sm:self-center mt-8 max-sm:border-r-[0px]  ">
                             <h3 className="border-b-[1px] pb-2 border-gray-600 max-sm:border-b-[0px]">Выберите опции</h3>
                             <div className="flex flex-col gap-4 max-sm:grid max-sm:grid-cols-2 max-sm:gap-2 max-sm:px-2">
