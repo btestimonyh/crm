@@ -1,12 +1,12 @@
 import {API_URL} from "./URL.js";
 
-export const getProjects = async () => {
+export const getProjects = async (timeZone = 0) => {
     // повертає всі проекти
     const token = localStorage.getItem('token');
 
     async function fetchAllProjects() {
         try {
-            const response = await fetch(API_URL + "/projects", {
+            const response = await fetch(API_URL + "/projects?gmtShift=" + timeZone, {
                 method: 'GET',
                 headers: new Headers({
                     'Authorization': 'Bearer ' + token,

@@ -1,11 +1,11 @@
 import {API_URL} from "./URL.js";
 
-export const getProjectById = async (account) => {
+export const getProjectById = async (id, timeZone) => {
     const token = localStorage.getItem('token');
-    console.log("GETTING PROJ FOR : ", account)
+    console.log("GETTING PROJ FOR : ", id)
     async function fetchProjectById() {
         try {
-            const response = await fetch(API_URL + "/projects/" + account, {
+            const response = await fetch(API_URL + "/projects/" + id + "?gmtShift="+timeZone, {
                 method: 'GET',
                 headers: new Headers({
                     'Authorization': 'Bearer ' + token,

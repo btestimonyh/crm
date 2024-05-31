@@ -73,7 +73,7 @@ export const leadsTitle = [
     },
     {
         field: 'sub1',
-        headerName: 'sub1',
+        headerName: 'link',
         minWidth: 120,
         disableColumnMenu: true,
     },
