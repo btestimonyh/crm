@@ -29,6 +29,7 @@ const Projects = () => {
     const [fullProjects, setFullProjects] = useState([]);
     const [timeZone, setTimeZone] = useState(0);
     const [projects, setProjects] = useState([]);
+    const [sortedDate,setSortedDate] = useState('За всё время')
     const ADMIN = ROLE === 'admin' || ROLE === 'owner';
     const navigate = useNavigate();
 
@@ -111,8 +112,10 @@ const Projects = () => {
     const timeZoneHandler = (time) => {
         setIsLoading(true);
         setTimeZone(time);
+        sortingProjects(sortedDate);
     }
     const sortingProjects = (time) => {
+        setSortedDate(time);
         setIsLoading(true);
         setTimeout(() => setIsLoading(false), 1000);
         if (time == 'За всё время') {
