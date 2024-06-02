@@ -199,7 +199,7 @@ const ProjectInfo = () => {
 
 
 
-    const headerNameGroup = groupByField == 'regDate' ? 'Дата' : groupByField == 'isFtd' ? 'FTD' : groupByField == 'rdCount' ? "RD" : groupByField == 'sub1' ? 'link' : groupByField;
+    const headerNameGroup = groupByField == 'regDate' ? 'Дата' : groupByField == 'isFtd' ? 'FTD' : groupByField == 'rdCount' ? "RD" : groupByField == 'sub1' ? 'link' : groupByField == 'sub6' ? 'adset name' : groupByField;
 
     const columnsLeads = [
         ...(groupByField ? [{
@@ -241,7 +241,7 @@ const ProjectInfo = () => {
     const uniqueFields = Object.keys(project.leads[0]);
     const options = uniqueFields.flatMap(field => {
         // const uniqueValues = getUniqueValues(leads, field);
-        const label = field == 'isFtd' ? 'FTD' : field == 'rdCount' ? 'RD' : field == 'sub1' ? 'link' : field;
+        const label = field == 'isFtd' ? 'FTD' : field == 'rdCount' ? 'RD' : field == 'sub1' ? 'link' : field == 'sub6' ? "adset name" : field;
         // return uniqueValues.length > 1 && (field !== 'id' && field !== 'firstName' && field !== 'lastName') ? [{ value: field, label: field }] : [];
         return (field == 'sub1' || field == 'sub2' || field == 'sub3' || field == 'sub4' || field == 'sub5' || field == 'sub6' || field == 'sub7' || field == 'sub8' || field == 'isFtd' || field == 'rdCount') ? [{ value: field, label: label }] : [];
     });
