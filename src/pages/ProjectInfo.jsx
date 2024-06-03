@@ -77,6 +77,8 @@ const ProjectInfo = () => {
         }
         if (project.buyerId !== 'none') {
             getData();
+        }else{
+            setBuyerName('Отсутствует')
         }
     }, [project])
 
@@ -342,7 +344,7 @@ const ProjectInfo = () => {
                                 Баер
                             </div>
                             <div className="flex items-center gap-2">
-                                {buyerName ? buyerName : 'Отсутствует'}
+                                {buyerName ? buyerName : '...'}
                                 <FaEdit className="text-[130%]" />
                             </div>
                         </div>}
