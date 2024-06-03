@@ -21,7 +21,7 @@ export default function BuyersSelect({ onChange, change }) {
             // setOptions(select);
         }
         getData();
-    }, [])
+    }, [options,change])
 
     return <Select
         // defaultValue={options[0]}

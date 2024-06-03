@@ -57,7 +57,7 @@ const ProjectInfo = () => {
 
     useEffect(() => {
         const getData = async () => {
-            const data = await getProjectById(id, timeZone);
+            const data = await getProjectById(id, 0);
             setProject(data);
             setActiveLeads(data.leads);
         }
@@ -255,6 +255,12 @@ const ProjectInfo = () => {
         ]),
         ...statsTitle,
     ];
+    // {
+    //     field: "subs",
+    //     headerName: "Подписчики",
+    //     minWidth: 120,
+    //     disableColumnMenu: true,
+    // },
 
     const uniqueFields = Object.keys(project.leads[0]);
     const options = uniqueFields.flatMap(field => {
