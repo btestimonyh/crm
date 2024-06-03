@@ -6,7 +6,7 @@ export const getProjectById = async (id,timeZone) => {
         subs: 3251,
         ftd: 10,
         rd: 10,
-        buyerId: 'id1',
+        buyerId: 'none',
         pixelId: '123',
         leads: [
             {
@@ -111,6 +111,7 @@ export const getProjectById = async (id,timeZone) => {
                 "isFtd": "true",
                 "rdCount": "100",
                 "rdAmount": "50",
+                "subscribed": true,
                 "fbStatus": "bad",
                 "sub1": "value1",
                 "sub2": "value2",

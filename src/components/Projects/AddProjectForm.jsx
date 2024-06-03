@@ -1,34 +1,15 @@
 import { IoClose } from "react-icons/io5"
 import LoginInput from "../Login/Input"
 import { Button } from "@mui/material"
-import Select from 'react-select';
-import { customStyles } from "../Users/CustomStylesSelect";
-import { useEffect, useRef, useState } from "react";
 import { addNewProject } from "../../util/addNewProject";
-import { getUsers } from "../../util/getUsers";
+import { useRef, useState } from "react";
+import BuyersSelect from "./BuyersSelect";
+
 
 const AddProjectForm = ({ onClose, projectsAmount, onAdd }) => {
-    const [options, setOptions] = useState([]);
     const nameInput = useRef(null);
     // const pixelInput = useRef(null);
-
-    useEffect(() => {
-        const getData = async () => {
-            const data = await getUsers();
-            const buyers = data.filter(user => user.job == 'buyer');
-            const select = buyers.map(user => {
-                return {
-                    value: user.userId,
-                    label: user.name
-                }
-            })
-            setOptions(select);
-        }
-        getData();
-    }, [])
-
-    const [buyer, setBuyer] = useState(options[0]);
-
+    const [buyer, setBuyer] = useState({ value: 'none', label: 'Отсутствует'});
     const [nameError, setNameError] = useState(false);
 
     const submitHandler = (e) => {
@@ -60,7 +41,6 @@ const AddProjectForm = ({ onClose, projectsAmount, onAdd }) => {
     }
 
 
-
     return <form
         onClick={(e) => e.stopPropagation()}
         onSubmit={submitHandler}
@@ -71,15 +51,8 @@ const AddProjectForm = ({ onClose, projectsAmount, onAdd }) => {
         <LoginInput placeholder="Название проекта" ref={nameInput} error={nameError} />
         {/* <LoginInput placeholder='Pixel ID' className='my-2' ref={pixelInput} /> */}
         <div className="text-gray-500 mt-2 text-sm">Отвественный байер</div>
-        <Select
-            defaultValue={options[0]}
-            placeholder="Отвественный баер"
-            options={options}
-            styles={customStyles}
-            className='w-full'
-            onChange={handleChange}
-        />
         
+        <BuyersSelect onChange={handleChange}/>
         <Button type='submit' variant="contained" color="secondary"><span className="font-[700]">ДОБАВИТЬ</span></Button>
         <div className="absolute top-4 right-4 text-3xl cursor-pointer" onClick={onClose}>
             <IoClose />

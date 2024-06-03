@@ -9,7 +9,7 @@ export const getProjects = async (timeZone = 0) => {
             subs: 3251,
             ftd: 10,
             rd: 10,
-            buyerId: 'id1',
+            buyerId: 'none',
             pixelId: '123',
             leads: [
                 {
@@ -261,6 +261,7 @@ export const getProjects = async (timeZone = 0) => {
                     "sub1": "value1",
                     "sub2": "value2",
                     "sub3": "value3",
+                    "subscribed": true,
                     "sub4": "value4",
                     "sub5": "value5",
                     "sub6": "value6",

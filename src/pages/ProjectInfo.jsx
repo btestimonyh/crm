@@ -16,6 +16,12 @@ import dayjs from "dayjs";
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { TailSpin } from "react-loader-spinner";
+import { getUserById } from "../util/getUserById";
+import { FaEdit } from "react-icons/fa";
+import Modal from "../components/Modal/Modal";
+import BuyerChange from "../components/Projects/BuyerChange";
+import { updateProject } from "../util/updateProject";
+
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -42,10 +48,12 @@ const ProjectInfo = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [timeZone, setTimeZone] = useState(0);
     const [sortedDate, setSortedDate] = useState('За всё время');
+    const [editBuyer, setEditBuyer] = useState(false);
 
     const ROLE = useSelector(role);
     const ADMIN = (ROLE == 'owner' || ROLE == 'admin');
-
+    const [buyerName, setBuyerName] = useState('');
+    const [activeBuyer, setActiveBuyer] = useState();
 
     useEffect(() => {
         const getData = async () => {
@@ -53,10 +61,24 @@ const ProjectInfo = () => {
             setProject(data);
             setActiveLeads(data.leads);
         }
+
         setTimeout(() => setIsLoading(false), 1000)
         getData();
     }, [id]);
 
+    useEffect(() => {
+        editBuyer ? document.body.style.overflowY = 'hidden' : document.body.style.overflowY = 'auto'
+    }, [editBuyer])
+
+    useEffect(() => {
+        const getData = async () => {
+            const user = await getUserById(project.buyerId);
+            setBuyerName(user.name);
+        }
+        getData();
+
+
+    }, [project])
 
     const updateData = async (zone = timeZone) => {
         const data = await getProjectById(id, zone);
@@ -130,13 +152,13 @@ const ProjectInfo = () => {
                     id: `${groupByField}-${group}`,
                     isGroupHeader: true,
                     groupName: `${nameHeader}`,
-                    leads: items.length,
-                    inactive: items.filter(el => el.subStatus == 'INACTIVE').length,
+                    leads: items.filter(lead => lead.subscribed).length,
+                    inactive: items.filter(lead => !lead.subscribed).length,
                     ftdAmount: totalftdAmount + ' $',
                     ftd: totalIsFtd,
                     rd: totalrdCount,
                     rdAmount: totalrdAmount + ' $',
-                    subsFtd: `${items.length} / ${totalIsFtd} (${items.length > 0 && totalIsFtd > 0 ? ((totalIsFtd * 100) / items.length).toFixed(2) : 0}%)`,
+                    subsFtd: `${items.filter(lead => lead.subscribed).length} / ${totalIsFtd} (${items.filter(lead => lead.subscribed).length > 0 && totalIsFtd > 0 ? ((totalIsFtd * 100) / items.filter(lead => lead.subscribed).length).toFixed(2) : 0}%)`,
                     // ftdRd: rdAmount > 0 ? (ftdAmount/rdAmount).toFixed(2) : 0,
                     ftdRd: `${totalIsFtd}/${totalrdCount} (${totalIsFtd > 0 && totalrdCount > 0 ? ((totalIsFtd * 100) / totalrdCount).toFixed(2) : 0}%)`,
                     // name: project.name
@@ -175,14 +197,14 @@ const ProjectInfo = () => {
                 id: project.id,
                 name: project.name,
                 subs: project.subs,
-                leads: leads ? leads.length : 0,
-                inactive: leads.filter(el => el.subStatus == 'INACTIVE').length,
+                leads: leads ? leads.filter(lead => lead.subscribed).length : 0,
+                inactive: leads ? leads.filter(lead => !lead.subscribed).length : 0,
                 ftd: ftdCount,
                 ftdAmount: ftdAmount + " $",
                 rd: rdCount,
                 rdAmount: rdAmount + " $",
                 // subsFtd: ftdAmount > 0 ? project.subs/ftdAmount : 0,
-                subsFtd: `${leads.length} / ${ftdCount} (${leads.length > 0 && ftdAmount > 0 ? ((ftdCount * 100) / (leads.length)).toFixed(2) : 0}%)`,
+                subsFtd: `${leads.filter(lead => lead.subscribed).length} / ${ftdCount} (${leads.filter(lead => lead.subscribed).length > 0 && ftdAmount > 0 ? ((ftdCount * 100) / (leads.filter(lead => lead.subscribed).length)).toFixed(2) : 0}%)`,
                 // ftdRd: rdAmount > 0 ? (ftdAmount/rdAmount).toFixed(2) : 0,
                 ftdRd: `${ftdCount}/${rdCount} (${ftdCount > 0 && rdCount > 0 ? ((ftdCount * 100) / rdCount).toFixed(2) : 0}%)`,
             }]
@@ -231,12 +253,6 @@ const ProjectInfo = () => {
         ]),
         ...statsTitle,
     ];
-    // {
-    //     field: "subs",
-    //     headerName: "Подписчики",
-    //     minWidth: 120,
-    //     disableColumnMenu: true,
-    // },
 
     const uniqueFields = Object.keys(project.leads[0]);
     const options = uniqueFields.flatMap(field => {
@@ -287,6 +303,21 @@ const ProjectInfo = () => {
         sortingStats(sortedDate);
     }
 
+    const handleChange = (option) => {
+        setActiveBuyer(option);
+    }
+
+    const submitBuyerChange = () =>{
+        if(activeBuyer){
+            updateProject(project.id, activeBuyer.value);
+            setEditBuyer(false);
+            updateData();
+            activeBuyer.value !== 'none' ? setBuyerName(activeBuyer.label) : setBuyerName('Отсутствует');  
+        }else{
+            setEditBuyer(false);
+        }
+        
+    }
     return (
         <section className="mb-10">
             {leads ? <div className="relative w-full bg-[#151d28] rounded-xl z-[0] pt-24 max-sm:pt-22">
@@ -304,10 +335,24 @@ const ProjectInfo = () => {
                             placeholder='link'
                         />
                     </div>
-                    <CopyPixel text={project.pixelId} />
+                    <div className="flex gap-4 justify-center">
+                        <CopyPixel text={project.pixelId} />
+                        {ADMIN && <div className="cursor-pointer" onClick={() => setEditBuyer(true)}>
+                            <div className='text-gray-500 text-sm mt-4 pl-2 mb-2'>
+                                Баер
+                            </div>
+                            <div className="flex items-center gap-2">
+                                {buyerName ? buyerName : 'Отсутствует'}
+                                <FaEdit className="text-[130%]" />
+                            </div>
+                        </div>}
+
+                    </div>
+
 
                 </div>
-                <div className="w-full flex justify-end px-8">
+                <div className="w-full flex justify-between items-center px-8 gap-2">
+                    <div className="text-[20px] text-gray-400 max-sm:text-[14px]">{project.name}</div>
                     {ADMIN && <Button variant="contained" color="secondary" onClick={() => setAdminTable(!adminTable)}><span className="font-[700]">{!adminTable ? "Таблица лидов" : "Таблица статистики"}</span></Button>}
                 </div>
 
@@ -423,7 +468,9 @@ const ProjectInfo = () => {
                 </div>
             </div> :
                 <section>Пока еще нет лидов</section>}
-
+            {editBuyer && <Modal onClose={() => setEditBuyer(false)} id='buyer-change'>
+                <BuyerChange onClose={() => setEditBuyer(false)} onChange={handleChange} onSubmit={submitBuyerChange}/>
+            </Modal>}
         </section>
     );
 };
