@@ -75,9 +75,9 @@ const ProjectInfo = () => {
             const user = await getUserById(project.buyerId);
             setBuyerName(user.name);
         }
-        getData();
-
-
+        if (project.buyerId !== 'none') {
+            getData();
+        }
     }, [project])
 
     const updateData = async (zone = timeZone) => {
@@ -307,16 +307,16 @@ const ProjectInfo = () => {
         setActiveBuyer(option);
     }
 
-    const submitBuyerChange = () =>{
-        if(activeBuyer){
+    const submitBuyerChange = () => {
+        if (activeBuyer) {
             updateProject(project.id, activeBuyer.value);
             setEditBuyer(false);
             updateData();
-            activeBuyer.value !== 'none' ? setBuyerName(activeBuyer.label) : setBuyerName('Отсутствует');  
-        }else{
+            activeBuyer.value !== 'none' ? setBuyerName(activeBuyer.label) : setBuyerName('Отсутствует');
+        } else {
             setEditBuyer(false);
         }
-        
+
     }
     return (
         <section className="mb-10">
@@ -469,7 +469,7 @@ const ProjectInfo = () => {
             </div> :
                 <section>Пока еще нет лидов</section>}
             {editBuyer && <Modal onClose={() => setEditBuyer(false)} id='buyer-change'>
-                <BuyerChange onClose={() => setEditBuyer(false)} onChange={handleChange} onSubmit={submitBuyerChange}/>
+                <BuyerChange onClose={() => setEditBuyer(false)} onChange={handleChange} onSubmit={submitBuyerChange} />
             </Modal>}
         </section>
     );
