@@ -35,7 +35,7 @@ const Projects = () => {
 
     useEffect(() => {
         const getData = async () => {
-            const data = await getProjects(timeZone);
+            const data = await getProjects(0);
             setProjects(data);
             setFullProjects(data);
         }

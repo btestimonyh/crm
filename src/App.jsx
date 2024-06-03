@@ -14,6 +14,7 @@ import { setAdmin, setOwner } from "./store/store";
 import { useEffect } from "react";
 import { roleCheck } from "./util/roleCheck";
 import { loginCheck } from "./util/loginCheck";
+import {formatDateTime} from "./util/front/formatDate.js";
 
 function App() {
   const isLogged = localStorage.getItem('isLogged');
@@ -41,6 +42,7 @@ function App() {
   }, [dispatch]);
 
   useEffect(() => {
+    console.log(formatDateTime())
     const userLogin = localStorage.getItem('userLogin');
     const userPassword = localStorage.getItem('userPassword');
 

@@ -84,7 +84,7 @@ const RegisterForm = ({ onClose, onAdd }) => {
             job: job,
             date: formatDateTime(),
         }
-
+        console.log("OUTER: ", data)
         registerUser(data);
         onClose();
         onAdd();
