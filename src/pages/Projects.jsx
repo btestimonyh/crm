@@ -56,8 +56,9 @@ const Projects = () => {
         setIsLoading(true);
         setTimeout(() => {
             setIsLoading(false);
+            
             window.location.reload();
-        }, 1000)
+        }, 1500)
         // setActiveProjects([...activeProjects, project]);
     };
 

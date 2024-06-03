@@ -75,9 +75,9 @@ const ProjectInfo = () => {
             const user = await getUserById(project.buyerId);
             setBuyerName(user.name);
         }
-        if (project.buyerId !== 'none') {
+        if (project.buyerId !== 'none' && project.buyerId) {
             getData();
-        }else{
+        } else {
             setBuyerName('Отсутствует')
         }
     }, [project])
@@ -87,28 +87,48 @@ const ProjectInfo = () => {
         setTimeout(() => setIsLoading(false), 1000)
         setProject(data);
     }
+    const submitBuyerChange = () => {
+        if (activeBuyer) {
+            updateProject(project.id, activeBuyer.value);
+            setEditBuyer(false);
+            setTimeout(() => { updateData(); }, 2000)
+            activeBuyer.value !== 'none' ? setBuyerName(activeBuyer.label) : setBuyerName('Отсутствует');
+        } else {
+            setEditBuyer(false);
+        }
 
-
-    if (!project.leads || project.leads.length == 0) {
-        return (
-            <section className="bg-[#151d28] rounded-xl p-4 relative flex items-center justify-center text-2xl">
-                В этом проекте нет лидов
-                <div className="absolute top-4 right-4 max-md:right-0">
-                    <Link to="/main/projects" className="flex items-center gap-4 text-xl rounded-xl bg-[#151d28] p-4">
-                        <IoMdArrowRoundBack />
-                        Назад
-                    </Link>
-                </div>
-            </section>
-        );
     }
 
 
+    // if (!project.leads || project.leads.length == 0) {
+    //     return (
+    //         <section className="bg-[#151d28] rounded-xl p-4 relative flex items-center justify-center text-2xl flex-col gap-14">
+    //              {ADMIN && <div className="cursor-pointer flex flex-col items-center" onClick={() => setEditBuyer(true)}>
+    //                         <div className='text-gray-500 text-sm mt-4 pl-2 mb-2'>
+    //                             Назначить баера
+    //                         </div>
+    //                         <div className="flex items-center gap-2">
+    //                             {buyerName ? buyerName : '...'}
+    //                             <FaEdit className="text-[130%]" />
+    //                         </div>
+    //                     </div>}
+    //             В этом проекте нет лидов
+    //             <div className="absolute top-4 right-4 max-md:right-0">
+    //                 <Link to="/main/projects" className="flex items-center gap-4 text-xl rounded-xl bg-[#151d28] p-4">
+    //                     <IoMdArrowRoundBack />
+    //                     Назад
+    //                 </Link>
+    //             </div> 
+    //         </section>
+    //     );
+    // }
 
-    const leads = activeLeads.map((el, index) => ({
+
+
+    const leads = activeLeads ? activeLeads.map((el, index) => ({
         id: index,
         ...el
-    }));
+    })): [];
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const groupedLeads = groupByField ? groupBy(leads, groupByField) : { All: leads };
@@ -232,7 +252,7 @@ const ProjectInfo = () => {
             sortable: false,
             disableColumnMenu: true,
             // flex: 1,
-            minWidth: 200,
+            minWidth: 240,
             renderCell: (params) => params.row.isGroupHeader ? <div className="px-2">{params.value}</div> : null
         }] : []),
         ...filteredLeadTitle,
@@ -244,7 +264,7 @@ const ProjectInfo = () => {
             sortable: true,
             disableColumnMenu: true,
             // flex: 1,
-            minWidth: 200,
+            minWidth: 240,
             renderCell: (params) => params.row.isGroupHeader ? <div className="px-2">{params.value}</div> : null
         }] : [{
             field: "name",
@@ -262,7 +282,7 @@ const ProjectInfo = () => {
     //     disableColumnMenu: true,
     // },
 
-    const uniqueFields = Object.keys(project.leads[0]);
+    const uniqueFields = Object.keys((project.leads && project.leads.length > 0) ? project.leads[0] : [{"none": "none"}]);
     const options = uniqueFields.flatMap(field => {
         // const uniqueValues = getUniqueValues(leads, field);
         const label = field == 'isFtd' ? 'FTD' : field == 'rdCount' ? 'RD' : field == 'sub1' ? 'link' : field == 'sub6' ? "adset name" : field;
@@ -315,17 +335,7 @@ const ProjectInfo = () => {
         setActiveBuyer(option);
     }
 
-    const submitBuyerChange = () => {
-        if (activeBuyer) {
-            updateProject(project.id, activeBuyer.value);
-            setEditBuyer(false);
-            updateData();
-            activeBuyer.value !== 'none' ? setBuyerName(activeBuyer.label) : setBuyerName('Отсутствует');
-        } else {
-            setEditBuyer(false);
-        }
-
-    }
+    
     return (
         <section className="mb-10">
             {leads ? <div className="relative w-full bg-[#151d28] rounded-xl z-[0] pt-24 max-sm:pt-22">
