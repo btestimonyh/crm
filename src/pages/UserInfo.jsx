@@ -56,7 +56,7 @@ const UserInfo = () => {
                         Почта: {user.login}
                     </div>
                     <div>
-                        Дата регистрации: {user.date}
+                        Дата регистрации: {user.registrationDate}
                     </div>
                     <div className="absolute top-[-15%] right-[-15%] max-md:right-0">
                         <Link to='/main/users' className="flex items-center gap-4 text-xl rounded-xl bg-[#151d28] p-4">
