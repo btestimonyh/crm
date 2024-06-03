@@ -29,6 +29,7 @@ const Projects = () => {
     const [fullProjects, setFullProjects] = useState([]);
     const [timeZone, setTimeZone] = useState(0);
     const [projects, setProjects] = useState([]);
+    const [sortedDate, setSortedDate] = useState('За всё время')
     const ADMIN = ROLE === 'admin' || ROLE === 'owner';
     const navigate = useNavigate();
 
@@ -42,14 +43,14 @@ const Projects = () => {
         getData();
     }, []);
 
-    useEffect(()=>{
-        const getData = async () =>{
+    useEffect(() => {
+        const getData = async () => {
             const data = await getProjects(timeZone);
             setFullProjects(data);
         }
         setTimeout(() => setIsLoading(false), 1000)
         getData();
-    },[timeZone])
+    }, [timeZone])
 
     const addProject = () => {
         setIsLoading(true);
@@ -81,7 +82,7 @@ const Projects = () => {
             setActiveProjects(projects);
         }
         // setIsLoading(false);
-    }, [ROLE, projects,fullProjects, filterHandler]);
+    }, [ROLE, projects, fullProjects, filterHandler]);
 
     const rows = activeProjects.map(el => {
 
@@ -99,11 +100,11 @@ const Projects = () => {
         return {
             id: el.id,
             name: el.name,
-            leads: el.leads && el.leads.length > 0 ? el.leads.length : 0,
-            inactive: el.leads && el.leads.length > 0 ? el.leads.filter(el => el.status == 'INACTIVE').length : 0,
+            leads: el.leads && el.leads.length > 0 ? el.leads.filter(lead => lead.subscribed).length : 0,
+            inactive: el.leads && el.leads.length > 0 ? el.leads.filter(lead => !lead.subscribed).length : 0,
             ftd: totalIsFtd,
             rd: totalrdCount,
-            subsFtd: `${(el.leads && el.leads.length > 0) ? el.leads.length : 0} / ${totalIsFtd} (${(el.leads && el.leads.length > 0) && totalIsFtd > 0 ? ((totalIsFtd * 100) / el.leads.length).toFixed(2) : 0}%)`,
+            subsFtd: `${(el.leads && el.leads.filter(lead => lead.subscribed).length > 0) ? el.leads.filter(lead => lead.subscribed).length : 0} / ${totalIsFtd} (${(el.leads && el.leads.filter(lead => lead.subscribed).length > 0) && totalIsFtd > 0 ? ((totalIsFtd * 100) / el.leads.filter(lead => lead.subscribed).length).toFixed(2) : 0}%)`,
             ftdRd: `${totalIsFtd}/${totalrdCount} (${totalIsFtd > 0 && totalrdCount > 0 ? ((totalIsFtd * 100) / totalrdCount).toFixed(2) : 0}%)`,
         }
     })
@@ -111,8 +112,10 @@ const Projects = () => {
     const timeZoneHandler = (time) => {
         setIsLoading(true);
         setTimeZone(time);
+        sortingProjects(sortedDate);
     }
     const sortingProjects = (time) => {
+        setSortedDate(time);
         setIsLoading(true);
         setTimeout(() => setIsLoading(false), 1000);
         if (time == 'За всё время') {
@@ -125,13 +128,12 @@ const Projects = () => {
                     leads: newLeads
                 }
             })
-            console.log(filterdProjects)
             setProjects(filterdProjects)
             return;
         }
         else if (Array.isArray(time) && time.length === 2) {
-            
-            const filterdProjects = fullProjects.map((el)=> {
+
+            const filterdProjects = fullProjects.map((el) => {
                 const [startDate, endDate] = time.map(date => dayjs(date, 'DD.MM.YYYY'));
                 const filteredList = el.leads ? el.leads.filter(lead => {
                     const regDate = dayjs(lead.regDate, 'DD.MM.YYYY');
@@ -141,13 +143,13 @@ const Projects = () => {
                     ...el,
                     leads: filteredList
                 }
-            }) 
-            
+            })
+
             setProjects(filterdProjects);
             return;
         }
-        const filteredProjects = fullProjects.map((el) =>{
-            const filteredList = el.leads ? el.leads.filter(lead => lead.regDate == time): [];
+        const filteredProjects = fullProjects.map((el) => {
+            const filteredList = el.leads ? el.leads.filter(lead => lead.regDate == time) : [];
             return {
                 ...el,
                 leads: filteredList
@@ -178,36 +180,36 @@ const Projects = () => {
                 wrapperStyle={{}}
                 wrapperClass=""
             /> </div> :
-                
-                    <Box className='px-6 w-full h-[60vh] max-sm:px-2 max-sm:gap-1'>
-                        <DataGrid
-                            sx={{
-                                color: 'white',
-                                border: 'none',
-                                '@media (max-width: 600px)': {
-                                    fontSize: '12px',
-                                },
 
-                            }}
-                            localeText={{
-                                noRowsLabel: '',
-                            }}
-                            rows={rows}
-                            columns={projectsTitle}
-                            initialState={{
-                                pagination: {
-                                    style: { color: 'white' },
-                                    paginationModel: { page: 0, pageSize: 10 },
-                                },
-                            }}
-                            pageSizeOptions={[5, 10, 15, 20]}
-                            onRowClick={handleRowClick}
-                            className="cursor-pointer"
-                        // checkboxSelection
-                        // disableRowSelectionOnClick
-                        />
-                    </Box>
-                
+                <Box className='px-6 w-full h-[60vh] max-sm:px-2 max-sm:gap-1'>
+                    <DataGrid
+                        sx={{
+                            color: 'white',
+                            border: 'none',
+                            '@media (max-width: 600px)': {
+                                fontSize: '12px',
+                            },
+
+                        }}
+                        localeText={{
+                            noRowsLabel: '',
+                        }}
+                        rows={rows}
+                        columns={projectsTitle}
+                        initialState={{
+                            pagination: {
+                                style: { color: 'white' },
+                                paginationModel: { page: 0, pageSize: 10 },
+                            },
+                        }}
+                        pageSizeOptions={[5, 10, 15, 20]}
+                        onRowClick={handleRowClick}
+                        className="cursor-pointer"
+                    // checkboxSelection
+                    // disableRowSelectionOnClick
+                    />
+                </Box>
+
             }
             {addingProject &&
                 <Modal onClose={() => setAddingProject(false)} id='adding-project-form'>
