@@ -184,10 +184,10 @@ const UsersPage = () => {
                             initialState={{
                                 pagination: {
                                     style: { color: 'white' },
-                                    paginationModel: { page: 0, pageSize: 10 },
+                                    paginationModel: { page: 0, pageSize: 100 },
                                 },
                             }}
-                            pageSizeOptions={[5, 10, 15, 20]}
+                            pageSizeOptions={[5, 10, 15, 20, 50,100]}
                         // checkboxSelection
                         // disableRowSelectionOnClick
                         />

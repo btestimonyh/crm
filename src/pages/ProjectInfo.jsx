@@ -99,32 +99,6 @@ const ProjectInfo = () => {
 
     }
 
-
-    // if (!project.leads || project.leads.length == 0) {
-    //     return (
-    //         <section className="bg-[#151d28] rounded-xl p-4 relative flex items-center justify-center text-2xl flex-col gap-14">
-    //              {ADMIN && <div className="cursor-pointer flex flex-col items-center" onClick={() => setEditBuyer(true)}>
-    //                         <div className='text-gray-500 text-sm mt-4 pl-2 mb-2'>
-    //                             Назначить баера
-    //                         </div>
-    //                         <div className="flex items-center gap-2">
-    //                             {buyerName ? buyerName : '...'}
-    //                             <FaEdit className="text-[130%]" />
-    //                         </div>
-    //                     </div>}
-    //             В этом проекте нет лидов
-    //             <div className="absolute top-4 right-4 max-md:right-0">
-    //                 <Link to="/main/projects" className="flex items-center gap-4 text-xl rounded-xl bg-[#151d28] p-4">
-    //                     <IoMdArrowRoundBack />
-    //                     Назад
-    //                 </Link>
-    //             </div> 
-    //         </section>
-    //     );
-    // }
-
-
-
     const leads = activeLeads ? activeLeads.map((el, index) => ({
         id: index,
         ...el
@@ -407,9 +381,10 @@ const ProjectInfo = () => {
                                 initialState={{
                                     pagination: {
                                         style: { color: 'white' },
-                                        paginationModel: { page: 0, pageSize: 15 },
+                                        paginationModel: { page: 0, pageSize: 100 },
                                     },
                                 }}
+                                pageSizeOptions={[5, 10, 15, 20,50,100]}
                                 // eslint-disable-next-line no-unused-vars
                                 onRowClick={(params, event) => {
                                     if (params.row.isGroupHeader) {
@@ -424,7 +399,6 @@ const ProjectInfo = () => {
                                 }}
 
                                 getRowClassName={(params) => (params.row.isGroupHeader ? 'group-header' : '')}
-                                pageSizeOptions={[5, 10, 15, 20]}
                                 className="cursor-pointer"
 
                             />
@@ -450,7 +424,7 @@ const ProjectInfo = () => {
                                 initialState={{
                                     pagination: {
                                         style: { color: 'white' },
-                                        paginationModel: { page: 0, pageSize: 15 },
+                                        paginationModel: { page: 0, pageSize: 100 },
                                     },
                                 }}
                                 // eslint-disable-next-line no-unused-vars
@@ -467,7 +441,7 @@ const ProjectInfo = () => {
                                 }}
                                 columns={columnsLeads}
                                 getRowClassName={(params) => (params.row.isGroupHeader ? 'group-header' : '')}
-                                pageSizeOptions={[5, 10, 15, 20]}
+                                pageSizeOptions={[5, 10, 15, 20,50,100]}
                                 className="cursor-pointer"
 
                             />
