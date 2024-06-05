@@ -1,8 +1,9 @@
 import {API_URL} from "./URL.js";
 
-export const updateProject = async (projectId,buyerId) =>{
+export const updateProject = async (projectId, buyerId) =>{
     const token = localStorage.getItem('token');
     console.log(projectId, buyerId);
+    buyerId = buyerId === 'none' ? null : buyerId;
 
     const requestData = {
         "buyerId": buyerId
