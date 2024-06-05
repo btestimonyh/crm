@@ -16,7 +16,7 @@ const FilterProjects = ({ filterProjects }) => {
                     label: user.name
                 }
             })
-            setOptions([{ value: 'all', label: 'Все'},{ value:'none', label: 'Без баера'}, ...select]);
+            setOptions([{ value: 'all', label: 'Все'},{ value: null, label: 'Без баера'}, ...select]);
         }
         getData();
     }, [])

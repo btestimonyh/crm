@@ -75,7 +75,7 @@ const ProjectInfo = () => {
             const user = await getUserById(project.buyerId);
             setBuyerName(user.name);
         }
-        if (project.buyerId !== 'none' && project.buyerId) {
+        if (project.buyerId !== null && project.buyerId) {
             getData();
         } else {
             setBuyerName('Отсутствует')
@@ -93,7 +93,7 @@ const ProjectInfo = () => {
             await updateProject(project.id, activeBuyer.value);
             setEditBuyer(false);
             updateData();
-            activeBuyer.value !== 'none' ? setBuyerName(activeBuyer.label) : setBuyerName('Отсутствует');
+            activeBuyer.value !== null ? setBuyerName(activeBuyer.label) : setBuyerName('Отсутствует');
         } else {
             setEditBuyer(false);
         }

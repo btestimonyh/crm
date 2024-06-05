@@ -9,7 +9,7 @@ import BuyersSelect from "./BuyersSelect";
 const AddProjectForm = ({ onClose, projectsAmount, onAdd }) => {
     const nameInput = useRef(null);
     // const pixelInput = useRef(null);
-    const [buyer, setBuyer] = useState({ value: 'none', label: 'Отсутствует'});
+    const [buyer, setBuyer] = useState({ value: null, label: 'Отсутствует'});
     const [nameError, setNameError] = useState(false);
 
     const submitHandler = async (e) => {
