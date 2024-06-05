@@ -45,7 +45,7 @@ const ProjectInfo = () => {
     const [groupByField, setGroupByField] = useState("sub1");
     const [adminTable, setAdminTable] = useState(false);
     // const [isSorted,setIsSorted] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState();
     const [timeZone, setTimeZone] = useState(0);
     const [sortedDate, setSortedDate] = useState('За всё время');
     const [editBuyer, setEditBuyer] = useState(false);
@@ -57,12 +57,12 @@ const ProjectInfo = () => {
 
     useEffect(() => {
         const getData = async () => {
+            setIsLoading(true)
             const data = await getProjectById(id, 0);
             setProject(data);
             setActiveLeads(data.leads);
+            setIsLoading(false);
         }
-
-        setTimeout(() => setIsLoading(false), 1000)
         getData();
     }, [id]);
 
@@ -83,15 +83,16 @@ const ProjectInfo = () => {
     }, [project])
 
     const updateData = async (zone = timeZone) => {
+        setIsLoading(true);
         const data = await getProjectById(id, zone);
-        setTimeout(() => setIsLoading(false), 1000)
         setProject(data);
+        setIsLoading(false);
     }
-    const submitBuyerChange = () => {
+    const submitBuyerChange = async () => {
         if (activeBuyer) {
-            updateProject(project.id, activeBuyer.value);
+            await updateProject(project.id, activeBuyer.value);
             setEditBuyer(false);
-            setTimeout(() => { updateData(); }, 2000)
+            updateData();
             activeBuyer.value !== 'none' ? setBuyerName(activeBuyer.label) : setBuyerName('Отсутствует');
         } else {
             setEditBuyer(false);
@@ -274,10 +275,9 @@ const ProjectInfo = () => {
     };
 
 
-    const sortingStats = (time) => {
+    const sortingStats = async (time) => {
         setSortedDate(time);
-        updateData();
-        setIsLoading(true);
+        await updateData();
         if (time == 'За всё время') {
             return setActiveLeads(project.leads)
         } else if (time.length == 7) {
@@ -299,7 +299,6 @@ const ProjectInfo = () => {
     }
 
     const timeZoneHandler = async (time) => {
-        setIsLoading(true);
         setTimeZone(time);
         await updateData(time);
         sortingStats(sortedDate);
