@@ -31,7 +31,7 @@ const Projects = () => {
     const [activeProjects, setActiveProjects] = useState([]);
     const [addingProject, setAddingProject] = useState(false);
     const ROLE = useSelector(role);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState();
     const [fullProjects, setFullProjects] = useState([]);
     const [timeZone, setTimeZone] = useState(0);
     const [projects, setProjects] = useState([]);
@@ -45,34 +45,29 @@ const Projects = () => {
 
     const getData = async () => {
         setIsLoading(true);
-        setTimeout(() => setIsLoading(false), 1000)
         const data = await getProjects(0);
         setProjects(data);
         setFullProjects(data);
+        setIsLoading(false);
     }
     useEffect(() => {
-        
         getData();
     }, []);
 
     useEffect(() => {
-        const getData = async () => {
+        
+        const getDataZone = async () => {
+            setIsLoading(true);
             const data = await getProjects(timeZone);
             setFullProjects(data);
+            setIsLoading(false);
         }
-        setTimeout(() => setIsLoading(false), 1000)
-        getData();
+        // setTimeout(() => setIsLoading(false), 1000)
+        if(timeZone !== 0){
+            getDataZone();
+        }
     }, [timeZone])
 
-    const addProject = () => {
-        setIsLoading(true);
-        setTimeout(() => {
-            setIsLoading(false);
-            getData();
-        }, 2000)
-        
-        // setActiveProjects([...activeProjects, project]);
-    };
 
     const handleRowClick = (params) => {
         navigate(`/main/projects/${params.row.id}`);
@@ -123,14 +118,11 @@ const Projects = () => {
     })
 
     const timeZoneHandler = (time) => {
-        setIsLoading(true);
         setTimeZone(time);
         sortingProjects(sortedDate);
     }
     const sortingProjects = (time) => {
         setSortedDate(time);
-        setIsLoading(true);
-        setTimeout(() => setIsLoading(false), 1000);
         if (time == 'За всё время') {
             return setProjects(fullProjects);
         } else if (time.length == 7) {
@@ -198,20 +190,20 @@ const Projects = () => {
     }
     ]
 
-    const removeProject = () => {
+    const removeProject = async () => {
         const idProject = submittingDelete.id
-        deleteProject(idProject);
+        await deleteProject(idProject);
         setSubmittingDelete('');
-        addProject();
+        getData();
     }
 
-    const changeProject = () => {
+    const changeProject = async () => {
         const idProject = submittingEdit.id;
         const newName = newProjectName.current.value;
         if (newName !== '') {
+            await renameProject(idProject, newName);
             setSubmittingEdit('');
-            renameProject(idProject, newName);
-            addProject();
+            getData();
         }
 
     }
@@ -271,7 +263,7 @@ const Projects = () => {
             }
             {addingProject &&
                 <Modal onClose={() => setAddingProject(false)} id='adding-project-form'>
-                    <AddProjectForm onClose={() => setAddingProject(false)} projectsAmount={projects.length} onAdd={addProject} />
+                    <AddProjectForm onClose={() => setAddingProject(false)} projectsAmount={projects.length} onAdd={getData} />
                 </Modal>}
             {
                 submittingDelete && <Modal onClose={() => setSubmittingDelete('')} id='subbmiting-remove-project'>
