@@ -1,5 +1,13 @@
 export const projectsTitle = [
     {
+        field: 'id',
+        headerName: 'ID',
+        disableColumnMenu: true,
+        minWidth: 100,
+        // flex: 1,
+        // maxWidth: 38,
+    },
+    {
         field: 'name',
         headerName: 'ПРОЕКТ',
         disableColumnMenu: true,
