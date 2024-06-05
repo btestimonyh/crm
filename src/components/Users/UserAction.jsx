@@ -20,15 +20,15 @@ const UserAction = ({ account, onDeactive, onDelete }) => {
         setAnchorEl(null);
     };
 
-    const deactiveAccount = () => {
+    const deactiveAccount = async () => {
+        await accountActive(account);
         handleClose();
-        accountActive(account);
         onDeactive(account);
     }
 
-    const deleteAccount = () => {
+    const deleteAccount = async () => {
+        await deleteAccountBack(account);
         handleClose();
-        deleteAccountBack(account);
         onDelete(account);
     }
 

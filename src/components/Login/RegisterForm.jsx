@@ -84,8 +84,7 @@ const RegisterForm = ({ onClose, onAdd }) => {
             job: job,
             date: formatDateTime(),
         }
-        console.log("OUTER: ", data)
-        registerUser(data);
+        await registerUser(data);
         onClose();
         onAdd();
         // window.location.href = '/'

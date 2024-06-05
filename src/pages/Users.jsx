@@ -1,4 +1,4 @@
-import { Await, useLoaderData, useNavigate } from "react-router-dom";
+import { Await,useNavigate } from "react-router-dom";
 import FilterUsers from "../components/Users/FilterUsers";
 import { usersTitle } from "../components/Users/userTitle";
 import { DataGrid } from '@mui/x-data-grid';
@@ -11,16 +11,27 @@ import RegisterForm from "../components/Login/RegisterForm";
 import { useSelector } from "react-redux";
 import { role } from "../store/store";
 import { TailSpin } from "react-loader-spinner";
+import { getUsers } from "../util/getUsers";
 
 
 const UsersPage = () => {
-    const fullData = useLoaderData();
-    const [activeData, setActiveData] = useState(fullData);
+    // const fullData = useLoaderData();
+    const [activeData, setActiveData] = useState([]);
     const [activeFilter, setActiveFilter] = useState(false);
     const [activeStatus, setActiveStatus] = useState(false);
     const [addingUser, setAddingUser] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [fullData,setFullData] = useState([]);
 
+    const getFullData = async () => {
+        setIsLoading(true);
+        const data = await getUsers();
+        setFullData(data);
+        setIsLoading(false);
+    }
+    useEffect(() => {
+        getFullData();
+    }, []);
 
     const ROLE = useSelector(role);
     const navigate = useNavigate();
@@ -60,31 +71,31 @@ const UsersPage = () => {
 
     }
 
-    const deactiveHandler = (account) => {
-        const index = activeData.findIndex(element => element.userId === account.userId);
+    // const deactiveHandler = (account) => {
+    //     const index = activeData.findIndex(element => element.userId === account.userId);
 
-        const newAccount = { ...account, status: account.status == 'active' ? 'inactive' : 'active' };
-        const updatedData = [...activeData];
-        updatedData.splice(index, 1, newAccount);
-        setActiveData(updatedData);
-    }
+    //     const newAccount = { ...account, status: account.status == 'active' ? 'inactive' : 'active' };
+    //     const updatedData = [...activeData];
+    //     updatedData.splice(index, 1, newAccount);
+    //     setActiveData(updatedData);
+    // }
 
-    const deleteHandler = (account) => {
-        const updatedData = [...activeData].filter(el => el.userId !== account.userId);
-        setActiveData(updatedData);
-    }
+    // const deleteHandler = (account) => {
+    //     const updatedData = [...activeData].filter(el => el.userId !== account.userId);
+    //     setActiveData(updatedData);
+    // }
 
     useEffect(() => {
         setActiveData(fullData);
     }, [fullData]);
 
-    const addHandler = () => {
-        setIsLoading(true);
-        setTimeout(() => {
-            setIsLoading(false);
-            window.location.reload();
-        }, 1000)
-    };
+    // const addHandler = () => {
+    //     setIsLoading(true);
+    //     setTimeout(() => {
+    //         setIsLoading(false);
+    //         window.location.reload();
+    //     }, 1000)
+    // };
 
     const modifiedTable = usersTitle.map((el) => {
         if (el.field === 'name') {
@@ -129,8 +140,8 @@ const UsersPage = () => {
                 ...el,
                 renderCell: (params) => (
                     <UserAction
-                        onDelete={deleteHandler}
-                        onDeactive={deactiveHandler}
+                        onDelete={getFullData}
+                        onDeactive={getFullData}
                         account={params.row} />
                 )
             }
@@ -198,7 +209,7 @@ const UsersPage = () => {
             </div>
             {addingUser &&
                 <Modal onClose={() => setAddingUser(false)} id='register-form'>
-                    <RegisterForm onClose={() => setAddingUser(false)} onAdd={addHandler} />
+                    <RegisterForm onClose={() => setAddingUser(false)} onAdd={getFullData} />
                 </Modal>
             }
         </Await>

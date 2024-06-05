@@ -26,16 +26,3 @@ export const addNewProject = async (project) =>{
         console.error('Error:', error);
     }
 }
-
-
-// {
-//     id: 'id',
-//     name: 'Projects 4',
-//     subs: 0,
-//     ftd: 0,
-//     rd: 0,
-//     buyers: [
-//         'id1'
-//     ]
-// }
-
