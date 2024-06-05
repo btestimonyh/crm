@@ -103,7 +103,7 @@ const ProjectInfo = () => {
     const leads = activeLeads ? activeLeads.map((el, index) => ({
         id: index,
         ...el
-    })): [];
+    })) : [];
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const groupedLeads = groupByField ? groupBy(leads, groupByField) : { All: leads };
@@ -250,14 +250,25 @@ const ProjectInfo = () => {
         ]),
         ...statsTitle,
     ];
-    // {
-    //     field: "subs",
-    //     headerName: "Подписчики",
-    //     minWidth: 120,
-    //     disableColumnMenu: true,
-    // },
+    {
+        ADMIN &&
+            columnsStats.splice(4, 0, {
+                field: 'ftdAmount',
+                headerName: 'Сумма FTD',
+                minWidth: 120,
+            })
+    }
+    {
+        ADMIN &&
+            columnsStats.splice(6, 0, {
+                field: 'rdAmount',
+                headerName: 'Сумма RD',
+                minWidth: 120,
+            })
+    }
 
-    const uniqueFields = Object.keys((project.leads && project.leads.length > 0) ? project.leads[0] : [{"none": "none"}]);
+
+    const uniqueFields = Object.keys((project.leads && project.leads.length > 0) ? project.leads[0] : [{ "none": "none" }]);
     const options = uniqueFields.flatMap(field => {
         // const uniqueValues = getUniqueValues(leads, field);
         const label = field == 'isFtd' ? 'FTD' : field == 'rdCount' ? 'RD' : field == 'sub1' ? 'link' : field == 'sub6' ? "adset name" : field;
@@ -308,7 +319,7 @@ const ProjectInfo = () => {
         setActiveBuyer(option);
     }
 
-    
+
     return (
         <section className="mb-10">
             {leads ? <div className="relative w-full bg-[#151d28] rounded-xl z-[0] pt-24 max-sm:pt-22">
@@ -383,7 +394,7 @@ const ProjectInfo = () => {
                                         paginationModel: { page: 0, pageSize: 100 },
                                     },
                                 }}
-                                pageSizeOptions={[5, 10, 15, 20,50,100]}
+                                pageSizeOptions={[5, 10, 15, 20, 50, 100]}
                                 // eslint-disable-next-line no-unused-vars
                                 onRowClick={(params, event) => {
                                     if (params.row.isGroupHeader) {
@@ -440,7 +451,7 @@ const ProjectInfo = () => {
                                 }}
                                 columns={columnsLeads}
                                 getRowClassName={(params) => (params.row.isGroupHeader ? 'group-header' : '')}
-                                pageSizeOptions={[5, 10, 15, 20,50,100]}
+                                pageSizeOptions={[5, 10, 15, 20, 50, 100]}
                                 className="cursor-pointer"
 
                             />

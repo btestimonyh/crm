@@ -63,9 +63,10 @@ const Projects = () => {
             setIsLoading(false);
         }
         // setTimeout(() => setIsLoading(false), 1000)
-        if(timeZone !== 0){
-            getDataZone();
-        }
+        // if(timeZone !== 0){
+        //     getDataZone();
+        // }
+        getDataZone();
     }, [timeZone])
 
 
@@ -104,6 +105,13 @@ const Projects = () => {
             return lead.rdCount ? total + parseInt(lead.rdCount) : total + 0;
         }, 0) : 0;
 
+        const totalFtdAmount  = el.leads && el.leads.length > 0 ? el.leads.reduce((total, lead) => {
+            return lead.ftdAmount ? total + parseInt(lead.ftdAmount) : total + 0;
+        },0) : 0;
+        const totalRdAmount  = el.leads && el.leads.length > 0 ? el.leads.reduce((total, lead) => {
+            return lead.rdAmount ? total + parseInt(lead.rdAmount) : total + 0;
+        },0) : 0;
+
 
         return {
             id: el.id,
@@ -111,7 +119,9 @@ const Projects = () => {
             leads: el.leads && el.leads.length > 0 ? el.leads.filter(lead => lead.subscribed).length : 0,
             inactive: el.leads && el.leads.length > 0 ? el.leads.filter(lead => !lead.subscribed).length : 0,
             ftd: totalIsFtd,
+            totalFtdAmount: totalFtdAmount,
             rd: totalrdCount,
+            totalRdAmount: totalRdAmount,
             subsFtd: `${(el.leads && el.leads.filter(lead => lead.subscribed).length > 0) ? el.leads.filter(lead => lead.subscribed).length : 0} / ${totalIsFtd} (${(el.leads && el.leads.filter(lead => lead.subscribed).length > 0) && totalIsFtd > 0 ? ((totalIsFtd * 100) / el.leads.filter(lead => lead.subscribed).length).toFixed(2) : 0}%)`,
             ftdRd: `${totalIsFtd}/${totalrdCount} (${totalIsFtd > 0 && totalrdCount > 0 ? ((totalIsFtd * 100) / totalrdCount).toFixed(2) : 0}%)`,
         }
@@ -169,7 +179,7 @@ const Projects = () => {
         headerName: 'Редактировать',
         minWidth: 120,
         disableColumnMenu: true,
-        renderCell: (params) => <div className='flex items-center justify-center text-3xl p-2' onClick={(e) => {
+        renderCell: (params) => <div className='flex items-center justify-center text-xl p-4' onClick={(e) => {
             e.stopPropagation();
             setSubmittingEdit(params.row);
         }}><FaEdit />
@@ -178,10 +188,10 @@ const Projects = () => {
     },
     {
         field: 'action',
-        headerName: 'Удалить проект',
-        minWidth: 140,
+        headerName: 'Удалить',
+        minWidth: 100,
         disableColumnMenu: true,
-        renderCell: (params) => <div className='flex items-center justify-center text-4xl p-2 text-red-400' onClick={(e) => {
+        renderCell: (params) => <div className='flex items-center justify-center text-2xl p-4 text-red-400' onClick={(e) => {
             e.stopPropagation();
             // console.log(params.row)
             setSubmittingDelete(params.row);
@@ -189,6 +199,19 @@ const Projects = () => {
 
     }
     ]
+
+    adminTitle.splice(5,0, {
+        field: 'totalFtdAmount',
+        headerName: 'Сумма FTD',
+        minWidth: 120,
+        renderCell: (params) => params.value + ' $'
+    })
+    adminTitle.splice(7,0,{
+        field: 'totalRdAmount',
+        headerName: 'Сумма RD',
+        minWidth: 120,
+        renderCell: (params) => params.value + ' $'
+    })
 
     const removeProject = async () => {
         const idProject = submittingDelete.id

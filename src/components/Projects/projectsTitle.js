@@ -3,7 +3,7 @@ export const projectsTitle = [
         field: 'id',
         headerName: 'ID',
         disableColumnMenu: true,
-        minWidth: 100,
+        width: 80,
         // flex: 1,
         // maxWidth: 38,
     },
@@ -11,14 +11,14 @@ export const projectsTitle = [
         field: 'name',
         headerName: 'ПРОЕКТ',
         disableColumnMenu: true,
-        minWidth: 200,
+        minWidth: 170,
         // flex: 1,
         // maxWidth: 38,
     },
     {
         field: "leads",
         headerName: "Подписки",
-        minWidth: 120,
+        minWidth: 100,
         disableColumnMenu: true,
     },
     {
@@ -30,7 +30,7 @@ export const projectsTitle = [
     {
         field: "ftd",
         headerName: "FTD",
-        minWidth: 100,
+        width: 80,
         disableColumnMenu: true,
     },
     // {
@@ -42,7 +42,7 @@ export const projectsTitle = [
     {
         field: "rd",
         headerName: "RD",
-        minWidth: 100,
+        width: 80,
         disableColumnMenu: true,
     },
     // {
@@ -60,7 +60,7 @@ export const projectsTitle = [
     {
         field: "ftdRd",
         headerName: "FTD/RD",
-        minWidth: 150,
+        minWidth: 120,
         disableColumnMenu: true,
     },
 ];
