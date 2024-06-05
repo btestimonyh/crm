@@ -12,7 +12,7 @@ const AddProjectForm = ({ onClose, projectsAmount, onAdd }) => {
     const [buyer, setBuyer] = useState({ value: 'none', label: 'Отсутствует'});
     const [nameError, setNameError] = useState(false);
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         const nameValue = nameInput.current.value;
         // const pixelValue = pixelInput.current.value;
         e.preventDefault();
@@ -30,8 +30,8 @@ const AddProjectForm = ({ onClose, projectsAmount, onAdd }) => {
             // pixelId: pixelValue,
         }
 
-        addNewProject(data);
-        onAdd(data);
+        await addNewProject(data);
+        onAdd();
         onClose();
 
 
