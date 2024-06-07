@@ -16,11 +16,7 @@ import dayjs from "dayjs";
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { TailSpin } from "react-loader-spinner";
-import { getUserById } from "../util/getUserById";
-import { FaEdit } from "react-icons/fa";
-import Modal from "../components/Modal/Modal";
-import BuyerChange from "../components/Projects/BuyerChange";
-import { updateProject } from "../util/updateProject";
+
 
 
 dayjs.extend(isSameOrAfter);
@@ -48,12 +44,9 @@ const ProjectInfo = () => {
     const [isLoading, setIsLoading] = useState();
     const [timeZone, setTimeZone] = useState(0);
     const [sortedDate, setSortedDate] = useState('За всё время');
-    const [editBuyer, setEditBuyer] = useState(false);
 
     const ROLE = useSelector(role);
     const ADMIN = (ROLE == 'owner' || ROLE == 'admin');
-    const [buyerName, setBuyerName] = useState('');
-    const [activeBuyer, setActiveBuyer] = useState();
 
     useEffect(() => {
         const getData = async () => {
@@ -66,38 +59,23 @@ const ProjectInfo = () => {
         getData();
     }, [id]);
 
-    useEffect(() => {
-        editBuyer ? document.body.style.overflowY = 'hidden' : document.body.style.overflowY = 'auto'
-    }, [editBuyer])
-
-    useEffect(() => {
-        const getData = async () => {
-            const user = await getUserById(project.buyerId);
-            setBuyerName(user.name);
-        }
-        if (project.buyerId !== null && project.buyerId) {
-            getData();
-        } else {
-            setBuyerName('Отсутствует')
-        }
-    }, [project])
+    // useEffect(() => {
+    //     const getData = async () => {
+    //         const user = await getUserById(project.buyerId);
+    //         setBuyerName(user.name);
+    //     }
+    //     if (project.buyerId !== null && project.buyerId) {
+    //         getData();
+    //     } else {
+    //         setBuyerName('Отсутствует')
+    //     }
+    // }, [project])
 
     const updateData = async (zone = timeZone) => {
         setIsLoading(true);
         const data = await getProjectById(id, zone);
         setProject(data);
         setIsLoading(false);
-    }
-    const submitBuyerChange = async () => {
-        if (activeBuyer) {
-            await updateProject(project.id, activeBuyer.value);
-            setEditBuyer(false);
-            updateData();
-            activeBuyer.value !== null ? setBuyerName(activeBuyer.label) : setBuyerName('Отсутствует');
-        } else {
-            setEditBuyer(false);
-        }
-
     }
 
     const leads = activeLeads ? activeLeads.map((el, index) => ({
@@ -315,9 +293,6 @@ const ProjectInfo = () => {
         sortingStats(sortedDate);
     }
 
-    const handleChange = (option) => {
-        setActiveBuyer(option);
-    }
 
 
     return (
@@ -339,7 +314,7 @@ const ProjectInfo = () => {
                     </div>
                     <div className="flex gap-4 justify-center">
                         <CopyPixel text={project.pixelId} />
-                        {ADMIN && <div className="cursor-pointer" onClick={() => setEditBuyer(true)}>
+                        {/* <div className="cursor-pointer" onClick={() => setEditBuyer(true)}>
                             <div className='text-gray-500 text-sm mt-4 pl-2 mb-2'>
                                 Баер
                             </div>
@@ -347,7 +322,7 @@ const ProjectInfo = () => {
                                 {buyerName ? buyerName : '...'}
                                 <FaEdit className="text-[130%]" />
                             </div>
-                        </div>}
+                        </div> */}
 
                     </div>
 
@@ -386,7 +361,7 @@ const ProjectInfo = () => {
                                 }}
                                 sortModel={sortModel}
                                 onSortModelChange={(newModel) => setSortModel(newModel)}
-                                rows={rowsStats}
+                                rows={rowsStats.reverse()}
                                 columns={columnsStats}
                                 initialState={{
                                     pagination: {
@@ -470,9 +445,6 @@ const ProjectInfo = () => {
                 </div>
             </div> :
                 <section>Пока еще нет лидов</section>}
-            {editBuyer && <Modal onClose={() => setEditBuyer(false)} id='buyer-change'>
-                <BuyerChange onClose={() => setEditBuyer(false)} onChange={handleChange} onSubmit={submitBuyerChange} />
-            </Modal>}
         </section>
     );
 };

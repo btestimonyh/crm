@@ -1,26 +1,31 @@
 // import FilterProjects from "../components/Projects/FilterProjects";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+
 import { DataGrid } from '@mui/x-data-grid';
 import { Box, Button } from "@mui/material";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { projectsTitle } from "../components/Projects/projectsTitle";
+
 import Modal from "../components/Modal/Modal";
+import { projectsTitle } from "../components/Projects/projectsTitle";
 import AddProjectForm from "../components/Projects/AddProjectForm";
-import { useNavigate } from "react-router-dom";
 import FilterProjects from "../components/Projects/FilterProjects";
-import { useSelector } from "react-redux";
 import { role } from "../store/store";
 import { TailSpin } from "react-loader-spinner";
 import SortByDate from "../components/Projects/SortByDate";
 import { getProjects } from "../util/getProjects";
+
 import dayjs from "dayjs";
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { MdDeleteForever } from 'react-icons/md';
 import { IoClose } from 'react-icons/io5';
 import { deleteProject } from '../util/deleteProject';
-import { FaEdit } from 'react-icons/fa';
 import LoginInput from '../components/Login/Input';
 import { renameProject } from '../util/renameProject';
+import ProjectsAction from "../components/Users/ProjectsAction";
+import BuyerChange from "../components/Projects/BuyerChange";
+import { updateProject } from "../util/updateProject";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -40,6 +45,8 @@ const Projects = () => {
     const navigate = useNavigate();
     const [submittingDelete, setSubmittingDelete] = useState();
     const [submittingEdit, setSubmittingEdit] = useState();
+    const [submittingBuyer, setSubmittingBuyer] = useState();
+    const [activeBuyer, setActiveBuyer] = useState();
 
     const newProjectName = useRef(null);
 
@@ -55,7 +62,7 @@ const Projects = () => {
     }, []);
 
     useEffect(() => {
-        
+
         const getDataZone = async () => {
             setIsLoading(true);
             const data = await getProjects(timeZone);
@@ -105,12 +112,12 @@ const Projects = () => {
             return lead.rdCount ? total + parseInt(lead.rdCount) : total + 0;
         }, 0) : 0;
 
-        const totalFtdAmount  = el.leads && el.leads.length > 0 ? el.leads.reduce((total, lead) => {
+        const totalFtdAmount = el.leads && el.leads.length > 0 ? el.leads.reduce((total, lead) => {
             return lead.ftdAmount ? total + parseInt(lead.ftdAmount) : total + 0;
-        },0) : 0;
-        const totalRdAmount  = el.leads && el.leads.length > 0 ? el.leads.reduce((total, lead) => {
+        }, 0) : 0;
+        const totalRdAmount = el.leads && el.leads.length > 0 ? el.leads.reduce((total, lead) => {
             return lead.rdAmount ? total + parseInt(lead.rdAmount) : total + 0;
-        },0) : 0;
+        }, 0) : 0;
 
 
         return {
@@ -119,6 +126,7 @@ const Projects = () => {
             leads: el.leads && el.leads.length > 0 ? el.leads.filter(lead => lead.subscribed).length : 0,
             inactive: el.leads && el.leads.length > 0 ? el.leads.filter(lead => !lead.subscribed).length : 0,
             ftd: totalIsFtd,
+            buyerId: el.buyerId,
             totalFtdAmount: totalFtdAmount,
             rd: totalrdCount,
             totalRdAmount: totalRdAmount,
@@ -179,37 +187,23 @@ const Projects = () => {
         headerName: 'Редактировать',
         minWidth: 120,
         disableColumnMenu: true,
-        renderCell: (params) => <div className='flex items-center justify-center text-xl p-4' onClick={(e) => {
-            e.stopPropagation();
-            setSubmittingEdit(params.row);
-        }}><FaEdit />
-        </div>
+        renderCell: (params) => <ProjectsAction row={params.row} onEdit={setSubmittingEdit} onDelete={setSubmittingDelete} onChangeBuyer={setSubmittingBuyer} />
 
     },
-    {
-        field: 'action',
-        headerName: 'Удалить',
-        minWidth: 100,
-        disableColumnMenu: true,
-        renderCell: (params) => <div className='flex items-center justify-center text-2xl p-4 text-red-400' onClick={(e) => {
-            e.stopPropagation();
-            // console.log(params.row)
-            setSubmittingDelete(params.row);
-        }}><MdDeleteForever /></div>
-
-    }
     ]
 
-    adminTitle.splice(5,0, {
+    adminTitle.splice(5, 0, {
         field: 'totalFtdAmount',
         headerName: 'Сумма FTD',
         minWidth: 120,
+        disableColumnMenu: true,
         renderCell: (params) => params.value + ' $'
     })
-    adminTitle.splice(7,0,{
+    adminTitle.splice(7, 0, {
         field: 'totalRdAmount',
         headerName: 'Сумма RD',
         minWidth: 120,
+        disableColumnMenu: true,
         renderCell: (params) => params.value + ' $'
     })
 
@@ -229,6 +223,21 @@ const Projects = () => {
             getData();
         }
 
+    }
+    const handleChangeBuyerName = (option) => {
+        setActiveBuyer(option);
+    }
+    const submitBuyerChange = async () => {
+        if (activeBuyer) {
+            await updateProject(submittingBuyer.id, activeBuyer.value)
+        }
+        getData();
+        setSubmittingBuyer('');
+    }
+    const removeBuyer = async (id) => {
+        await updateProject(id, null);
+        getData();
+        setSubmittingBuyer('');
     }
 
     return <section>
@@ -275,7 +284,7 @@ const Projects = () => {
                                 paginationModel: { page: 0, pageSize: 100 },
                             },
                         }}
-                        pageSizeOptions={[5, 10, 15, 20,50,100]}
+                        pageSizeOptions={[5, 10, 15, 20, 50, 100]}
                         onRowClick={handleRowClick}
                         className="cursor-pointer"
                     // checkboxSelection
@@ -319,6 +328,17 @@ const Projects = () => {
                             </div>
                         </div>
                     </div>
+                </Modal>
+            }
+            {
+                submittingBuyer && <Modal onClose={() => setSubmittingBuyer('')} id='subbmiting-changing-buyer'>
+                    <BuyerChange
+                        onClose={() => setSubmittingBuyer(false)}
+                        onChange={handleChangeBuyerName}
+                        onRemove={removeBuyer}
+                        onRechange={submitBuyerChange}
+                        activeProject={submittingBuyer}
+                    />
                 </Modal>
             }
         </div>

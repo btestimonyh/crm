@@ -4,7 +4,7 @@ import { customStyles } from "../Users/CustomStylesSelect";
 import { getUsers } from "../../util/getUsers";
 
 
-export default function BuyersSelect({ onChange, change }) {
+export default function BuyersSelect({ onChange }) {
     const [options, setOptions] = useState([]);
     useEffect(() => {
         const getData = async () => {
@@ -16,16 +16,16 @@ export default function BuyersSelect({ onChange, change }) {
                     label: user.name
                 }
             })
-            change ? setOptions([{ value: 'none', label: 'Удалить баера' }, ...select]) : setOptions(select);
+            // change ? setOptions([{ value: 'none', label: 'Удалить баера' }, ...select]) : setOptions(select);
           
-            // setOptions(select);
+            setOptions(select);
         }
         getData();
     }, [])
 
     return <Select
         // defaultValue={options[0]}
-        placeholder="Отвественный баер"
+        placeholder="Назначить баера"
         options={options}
         styles={customStyles}
         className='w-full'
